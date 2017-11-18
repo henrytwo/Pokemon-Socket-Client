@@ -16,7 +16,7 @@ public class Main {
 
         // Client UUID
         String uuid = connector.get("0 // ")[1];
-        System.out.println("UUID: " + initData);
+        System.out.println("UUID: " + uuid);
         System.out.println(connector.get("1 // " + uuid + " // Hdenry // Pikachu\n")[1]);
     }
 }
