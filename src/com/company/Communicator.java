@@ -1,3 +1,10 @@
+// RASTERA SOCKET COMMUNICATOR
+// COPYRIGHT 2017 (C) RASTERA DEVELOPMENT
+// rastera.xyz
+// DEVELOPED BY HENRY TU
+
+// Communicator.java
+
 package com.company;
 
 import java.io.BufferedReader;
@@ -9,36 +16,35 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Communicator {
-        private String host;
-        private int port;
         private Socket socketConnection;
-        BufferedReader inFromServer;
-        PrintWriter outToServer;
+        private BufferedReader inFromServer;
+        private PrintWriter outToServer;
         String inData;
 
-        public Communicator(String ihost, int iport) {
-            host = ihost;
-            port = iport;
-        }
-
-        public String[] get(String data) {
+        public Communicator(String host, int port) {
             try {
                 socketConnection = new Socket(host, port);
                 inFromServer = new BufferedReader(new InputStreamReader(socketConnection.getInputStream()));
                 outToServer = new PrintWriter(socketConnection.getOutputStream(), true);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                System.exit(0);
+            }
+        }
 
+        public String[] get(String data) {
+            try {
                 System.out.println("Communicating...");
                 outToServer.write(data);
                 outToServer.flush();
 
                 inData = inFromServer.readLine();
+
                 if (inData != null) {
                     return inData.split(" // ");
                 }
 
-                socketConnection.close();
             } catch (IOException e) {
-                System.out.println("Shit it broke");
                 System.out.println(e.getMessage());
                 System.exit(0);
             }

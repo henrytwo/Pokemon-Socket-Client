@@ -1,3 +1,5 @@
+// Main.java
+
 package com.company;
 
 import java.io.*;
@@ -6,17 +8,23 @@ import java.util.*;
 
 public class Main {
 
+    public static Scanner stdin = new Scanner(System.in);
+
     public static void main(String[] args){
         multiplayer();
     }
 
     public static void multiplayer() {
         // Socket server
-        Communicator connector = new Communicator("127.0.0.1", 3149);
+        Communicator connector = new Communicator("127.0.0.1", 3157);
 
         // Client UUID
-        String uuid = connector.get("0 // ")[1];
-        System.out.println("UUID: " + uuid);
-        System.out.println(connector.get("1 // " + uuid + " // Hdenry // Pikachu\n")[1]);
+        while (true) {
+            System.out.print("> ");
+            String[] data = connector.get(stdin.nextLine());
+            for (String line : data) {
+                System.out.println(line);
+            }
+        }
     }
 }
