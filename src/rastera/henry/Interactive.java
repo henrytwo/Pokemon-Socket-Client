@@ -13,6 +13,8 @@ public class Interactive {
 
         while (true) {
 
+            //System.out.print("\033[H\033[2J");
+
             System.out.println("╔════════════════════════════════╗");
             System.out.println(String.format("║ %30s ║", caption));
             System.out.println("╠════╦═══════════════════════════╣");

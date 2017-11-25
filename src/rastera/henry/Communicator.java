@@ -22,12 +22,12 @@ public class Communicator {
 
     public Communicator(String host, int port) {
         try {
+            System.out.println(String.format("\nSuccessfully connected to server at: %s:%d", host, port));
             socketConnection = new Socket(host, port);
             inFromServer = new BufferedReader(new InputStreamReader(socketConnection.getInputStream()));
             outToServer = new PrintWriter(socketConnection.getOutputStream(), true);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.exit(0);
+            System.out.println(String.format("\nUnable to connect to: %s:%d", host, port));
         }
     }
 
@@ -45,8 +45,7 @@ public class Communicator {
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(0);
         }
-        return new String[]{};
+        return new String[]{"-1 // Error: Unable to Connect"};
     }
 }
