@@ -14,7 +14,7 @@ public class Deck {
         try {
             Scanner inFile = new Scanner(new File(filePath));
             while (inFile.hasNextLine()) {
-                String[] dataLine = inFile.nextLine().split(",");
+                String[] dataLine = inFile.nextLine().replaceAll(", ,", ",N/A,").split(",");
                 pokemonData.put(dataLine[0], new Pokemon(dataLine));
 
                 System.out.println(pokemonData.get(dataLine[0]));

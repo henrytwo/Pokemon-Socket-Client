@@ -7,7 +7,7 @@ import java.util.HashSet;
 public class Pokemon {
     private String name, type, resistance, weakness;
     private int hp, numAttacks;
-    private HashMap<String, Attack> attacks;
+    private HashSet<Attack> attacks;
 
     public Pokemon(String[] dataLine) {
         this.name = dataLine[0];
@@ -19,11 +19,11 @@ public class Pokemon {
         this.attacks = getAttacks(Arrays.copyOfRange(dataLine, 6, dataLine.length));
     }
 
-    private HashMap<String, Attack> getAttacks(String[] attackData) {
-        HashMap<String, Attack> attacks = new HashMap();
+    private HashSet<Attack> getAttacks(String[] attackData) {
+        HashSet<Attack> attacks = new HashSet();
 
         for (int index = 0; index < this.numAttacks * 4; index += 4) {
-            attacks.put(attackData[index], new Attack(attackData[index], attackData[index + 1], attackData[index + 2], (index + 3) < attackData.length ? attackData[index + 3] : " "));
+            attacks.add(new Attack(attackData[index], attackData[index + 1], attackData[index + 2], (index + 3) < attackData.length ? attackData[index + 3] : "N/A"));
         }
 
         return attacks;
@@ -53,25 +53,31 @@ public class Pokemon {
         return this.numAttacks;
     }
 
-    public HashMap<String, Attack> getAttacks() {
+    public HashSet<Attack> getAttacks() {
         return this.attacks;
     }
 
     public String generateHealthBar() {
-        String bar = "";
+        String bar = "[";
 
         for (int i = 0; i < 20; i++) {
             bar += "|";
         }
 
-        return bar;
+        return bar + "]";
     }
 
     public String generateAttacks() {
-        return "Pineapple";
+        String formattedAttacks = "";
+
+        for (Attack currentAttack : this.attacks) {
+            formattedAttacks += (" " + currentAttack.toString());
+        }
+
+        return formattedAttacks;
     }
 
     public String toString() {
-        return String.format("║ %15s ║ %s ║ %15s ║ %15s ║ %15s ║ [%s] ║", this.name, this.generateHealthBar(), this.type, this.resistance, this.weakness, this.generateAttacks());
+        return String.format("║ %-15s ║ %s [%3d/%-3d] ║ %-15s ║ %-15s ║ %-15s ║%s ║", this.name, this.generateHealthBar(), this.hp, this.hp, this.type, this.resistance, this.weakness, this.generateAttacks());
     }
 }

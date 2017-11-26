@@ -16,11 +16,11 @@ public class Interactive {
             //System.out.print("\033[H\033[2J");
 
             System.out.println("╔════════════════════════════════╗");
-            System.out.println(String.format("║ %30s ║", caption));
+            System.out.println(String.format("║ %-30s ║", caption));
             System.out.println("╠════╦═══════════════════════════╣");
 
             for(int i = 0; i < options.length; i++) {
-                System.out.println(String.format("║ %2d ║ %25s ║", i + 1, options[i]));
+                System.out.println(String.format("║ %-2d ║ %-25s ║", i + 1, options[i]));
             }
 
             System.out.println("╚════╩═══════════════════════════╝");

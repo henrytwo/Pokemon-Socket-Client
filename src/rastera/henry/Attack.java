@@ -26,4 +26,8 @@ public class Attack {
     public String getSpecial(){
         return this.special;
     }
+
+    public String toString() {
+        return String.format("[ %-15s EC: %-3d D: %-3d S: %-10s ]", this.name, this.energyCost, this.damage, this.special);
+    }
 }
