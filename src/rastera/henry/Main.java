@@ -9,10 +9,10 @@ import java.util.*;
 public class Main {
 
     public static Scanner stdin = new Scanner(System.in);
-    public static String name;
-    public static String gameCode;
-    public static String uuid;
-    public static String[] pikachuNames = new String[] {"Pikachu", "Pikachu", "Pikachu", "Pikachu"};
+    public static String name, gameCode, uuid, host;
+    public static int port;
+    public static String[] pokemonNames = new String[] {"Pikachu", "Pikachu", "Pikachu", "Pikachu"};
+    public static Deck deck = new Deck("data/pokemon_data.txt");
 
     public static void main(String[] args){
         int gameMode;
@@ -31,7 +31,26 @@ public class Main {
                     multiplayer();
                     break;
                 case 3:
-                    multiplayer();
+                    while (true) {
+                        System.out.println("Enter the address and port of the RASTERA LAN server");
+
+                        try {
+                            System.out.print("Host: ");
+                            host = stdin.nextLine();
+
+                            System.out.print("Port: ");
+                            port = stdin.nextInt();
+
+                            break;
+                        }
+                        catch (Exception e) {
+                            System.out.print("Error: Invalid Entry");
+                            stdin.next();
+                        }
+                    }
+
+                    multiplayer(host, port);
+
                     break;
                 case 4:
                     System.exit(0);
@@ -44,45 +63,39 @@ public class Main {
     }
 
     public static void multiplayer() {
-        // Socket server
-        Communicator connector = new Communicator("127.0.0.1", 3160);
+        multiplayer("127.0.0.1", 3160);
+    }
 
-        while (true) {
+    public static void multiplayer(String host, int port) {
+
+        Communicator connector = new Communicator(host, port);
+
+        while (connector.isAlive) {
             switch (Interactive.singleSelectMenu("RASTERA WAN MULTIPLAYER", new String[]{"Generate Game Code", "Join Game Room", "Debug console", "Exit WAN MULTIPLAYER"})) {
                 case 1:
                     gameCode = Operations.genCode(connector);
 
-                    System.out.println(String.format(" |Code Successfully Generated: %s", gameCode));
-                    System.out.println(" |Ensure both players enter the EXACT");
-                    System.out.println(" |to join the game. (Case sensitive)");
+                    if (!gameCode.equals("-1")) {
+                        System.out.println(String.format(" |Code Successfully Generated: %s", gameCode));
+                        System.out.println(" |Ensure both players enter the EXACT");
+                        System.out.println(" |to join the game. (Case sensitive)");
 
-                    while (true) {
-                        try {
-                            System.out.println(String.format("\nJoin this game? <%s> [Y/n]", gameCode));
-                            System.out.print("[Enter Selection] > ");
-
-                            String selection = stdin.nextLine().toLowerCase().substring(0, 1);
-
-                            if (selection.equals("n")) {
-                                break;
-                            }
-                            else if (selection.equals("y")) {
-                                Operations.joinGame(connector, name, gameCode, pikachuNames);
-                                break;
-                            }
-                            else {
-                                System.out.println("\nError: Please enter a valid choice [Y/n]");
-                            }
-                        }
-                        catch (Exception e) {
-                            stdin.nextLine();
+                        if (Interactive.booleanSelectMenu(String.format("\nJoin this game? <%s> [Y/n]", gameCode))) {
+                            Operations.joinGame(connector);
+                            break;
+                        } else {
+                            break;
                         }
                     }
+                    else {
+                        System.out.println("Error: Unable to connect to server");
+                    }
 
-                    break;
                 case 2:
+                    System.out.print("[Enter Game Code]> ");
+                    gameCode = stdin.next();
 
-                    //Operations.joinGame(connector, name, gameCode, pikachuNames);
+                    Operations.joinGame(connector);
                     break;
                 case 3:
                     Operations.debugConsole(connector);

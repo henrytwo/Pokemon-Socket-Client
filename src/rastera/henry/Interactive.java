@@ -7,9 +7,9 @@ public class Interactive {
 
     public static Scanner stdin = new Scanner(System.in);
 
-    private static int selection;
-
     public static int singleSelectMenu(String caption, String[] options) {
+
+        int selection;
 
         while (true) {
 
@@ -24,7 +24,7 @@ public class Interactive {
             }
 
             System.out.println("╚════╩═══════════════════════════╝");
-            System.out.print("[Enter Selection] > ");
+            System.out.print("[Enter Selection]> ");
 
             try {
                 selection = stdin.nextInt();
@@ -43,6 +43,28 @@ public class Interactive {
 
         }
 
+    }
+
+    public static boolean booleanSelectMenu(String caption) {
+        while (true) {
+
+            System.out.println(caption);
+            System.out.print("[Enter Selection]> ");
+
+            try {
+                char selection = stdin.next().toLowerCase().charAt(0);
+                if (selection == 'y' || selection == 'n') {
+                    return selection == 'y';
+                }
+                else {
+                    System.out.println("\nError: Please enter a valid choice [Y/n]");
+                }
+            }
+            catch (Exception e) {
+                System.out.println("\nError: Please enter a valid choice [Y/n]");
+                stdin.nextLine();
+            }
+        }
 
     }
 }
