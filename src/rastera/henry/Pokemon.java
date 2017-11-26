@@ -23,7 +23,7 @@ public class Pokemon {
         HashMap<String, Attack> attacks = new HashMap();
 
         for (int index = 0; index < this.numAttacks * 4; index += 4) {
-            attacks.put(attackData[index, new Attack(attackData[index], attackData[index + 1], attackData[index + 2], attackData[index + 3]));
+            attacks.put(attackData[index], new Attack(attackData[index], attackData[index + 1], attackData[index + 2], (index + 3) < attackData.length ? attackData[index + 3] : " "));
         }
 
         return attacks;
@@ -55,5 +55,23 @@ public class Pokemon {
 
     public HashMap<String, Attack> getAttacks() {
         return this.attacks;
+    }
+
+    public String generateHealthBar() {
+        String bar = "";
+
+        for (int i = 0; i < 20; i++) {
+            bar += "|";
+        }
+
+        return bar;
+    }
+
+    public String generateAttacks() {
+        return "Pineapple";
+    }
+
+    public String toString() {
+        return String.format("║ %15s ║ %s ║ %15s ║ %15s ║ %15s ║ [%s] ║", this.name, this.generateHealthBar(), this.type, this.resistance, this.weakness, this.generateAttacks());
     }
 }

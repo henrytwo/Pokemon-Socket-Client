@@ -16,8 +16,11 @@ public class Deck {
             while (inFile.hasNextLine()) {
                 String[] dataLine = inFile.nextLine().split(",");
                 pokemonData.put(dataLine[0], new Pokemon(dataLine));
+
+                System.out.println(pokemonData.get(dataLine[0]));
             }
             inFile.close();
+
         }
         catch (IOException e) {
             System.out.println("Error: FileIO error");
