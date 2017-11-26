@@ -7,6 +7,10 @@ public class Interactive {
 
     public static Scanner stdin = new Scanner(System.in);
 
+    public static String correctCase(String word) {
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
+    }
+
     public static int singleSelectMenu(String caption, String[] options) {
 
         int selection;

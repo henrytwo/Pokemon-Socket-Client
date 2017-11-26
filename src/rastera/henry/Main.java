@@ -21,6 +21,11 @@ public class Main {
         System.out.print("Enter name: ");
         name = stdin.nextLine();
 
+        for (String pokemonName : deck.getPokemonName()) {
+            System.out.println(deck.getPokemon(pokemonName));
+        }
+
+
         while (true) {
             // Mode select
             switch (Interactive.singleSelectMenu("Select Gamemode", new String[]{"1 vs Computer", "1 vs 1 [WAN Multiplayer]", "1 vs 1 [LAN Multiplayer]", "Exit"})) {

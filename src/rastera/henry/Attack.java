@@ -5,10 +5,10 @@ public class Attack {
     private int energyCost, damage;
 
     public Attack(String name, String energyCost, String damage, String special) {
-        this.name = name;
+        this.name = Interactive.correctCase(name);
         this.energyCost = Integer.parseInt(energyCost);
         this.damage = Integer.parseInt(damage);
-        this.special = special;
+        this.special = Interactive.correctCase(special);
     }
 
     public String getName(){
