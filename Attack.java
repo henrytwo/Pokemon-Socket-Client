@@ -1,5 +1,3 @@
-package rastera.henry;
-
 public class Attack {
     private String name, special;
     private int energyCost, damage;

@@ -1,5 +1,3 @@
-package rastera.henry;
-
 import java.util.Scanner;
 
 public class Operations {
@@ -10,7 +8,7 @@ public class Operations {
             System.out.print("> ");
             String[] data = connector.get(stdin.nextLine());
             for (String line : data) {
-                System.out.println(" |" + line);
+                Interactive.delayTypeln(" |" + line);
             }
         }
     }
@@ -21,18 +19,17 @@ public class Operations {
     }
 
     public static void joinGame(Communicator connector) {
-
         // Join room
-        String[] data = connector.get(String.format("1 // %s // %s // %s", Main.gameCode, Main.name, String.join(" // ", Main.pokemonNames)));
+        String[] data = connector.get(String.format("1 // %s // %s // %s", Main.gameCode, Main.name, String.join(" // ", Deck.getPokemonName(Main.selectedPokemon))));
 
         if (data[0].equals("1")) {
             Main.uuid = data[2];
 
-            System.out.println(String.format(" |%s", data[1]));
-            System.out.println(String.format(" |Assigned UUID: %s", data[2]));
+            Interactive.confirmBoxClear(String.format("%s\n" +
+                                                      "Assigned UUID: %s", data[1], data[2]));
         }
         else {
-            System.out.println(String.format(" |%s", data[1]));
+            Interactive.confirmBoxClear(String.format("%s", data[1]));
             return;
         }
 
@@ -40,7 +37,7 @@ public class Operations {
             // Acknowledgement
             data = connector.get(String.format(" 2 // %s // %s", Main.gameCode, Main.uuid));
             for(String line:data) {
-                System.out.println(line);
+                Interactive.delayTypeln(line);
             }
         }
 

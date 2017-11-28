@@ -5,7 +5,6 @@
 
 // Communicator.java
 
-package rastera.henry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,39 +19,61 @@ public class Communicator {
     private Socket socketConnection;
     private BufferedReader inFromServer;
     private PrintWriter outToServer;
-    boolean isAlive = true;
-    String inData;
+    private String inData;
+    public  boolean isAlive = true;
 
+    /* Constructor for Communicator class.
+    *  Establishes TCP connection and
+    *  verifies connection with server.
+    *
+    *  @param host     String of IP Address for Socket to bind to
+    *  @param port     Integer of Port at Host for socket to bind to
+    */
     public Communicator(String host, int port) {
         try {
             socketConnection = new Socket();
             socketConnection.connect(new InetSocketAddress(host, port), 5000);
 
-
-            inFromServer = new BufferedReader(new InputStreamReader(socketConnection.getInputStream()));
-            outToServer = new PrintWriter(socketConnection.getOutputStream(), true);
+            inFromServer     = new BufferedReader(new InputStreamReader(socketConnection.getInputStream()));
+            outToServer      = new PrintWriter(socketConnection.getOutputStream(), true);
 
             String[] verificationResponse = this.get("3000 // ");
 
+            /* Sends CODE 3000 to server to verify
+            *  that connection is to proper game
+            *  server. (It's possible to connect
+            *  to any TCP server successfully)
+            */
             if (verificationResponse.length == 2 && verificationResponse[1].equals("DOCTYPE!")) {
-                System.out.println(String.format("\nSuccessfully connected to server at: %s:%d", host, port));
+                Interactive.confirmBoxClear(String.format("Successfully connected to server at: %s:%d", host, port));
             }
             else  {
                 isAlive = false;
-                System.out.println(String.format("\nUnable to connect to: %s:%d", host, port));
+                Interactive.confirmBoxClear(String.format("Unable to connect to: %s:%d", host, port));
                 socketConnection.close();
             }
-
         } catch (IOException e) {
             isAlive = false;
-            System.out.println(String.format("\nUnable to connect to: %s:%d", host, port));
+            e.printStackTrace();
+            Interactive.confirmBoxClear(String.format("Unable to connect to: %s:%d", host, port));
         }
     }
 
+    /* Sends string with encoded data to
+    *  Socket server and splits returned
+    *  data as String Array.
+    *
+    *  @param data String of data to be sent
+    */
     public String[] get(String data) {
+
+        /* Verifies that Socket is still active
+        *  before sending data to avoid crashes.
+        */
         if (isAlive) {
             try {
-                System.out.println("Communicating...");
+                Interactive.clearConsole();
+                Interactive.delayTypeln("Communicating...");
                 outToServer.write(data);
                 outToServer.flush();
 

@@ -1,5 +1,3 @@
-package rastera.henry;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,15 +7,24 @@ public class Pokemon {
     private int hp, totalhp, numAttacks;
     private HashSet<Attack> attacks;
 
+    private static final int ATTACKCAP = 2;
+    private static final int NAME = 0;
+    private static final int HP = 1;
+    private static final int TYPE = 2;
+    private static final int RESISTANCE = 3;
+    private static final int WEAKNESS = 4;
+    private static final int NUMATTACKS = 5;
+    private static final int ATTACKS = 6;
+
     public Pokemon(String[] dataLine) {
-        this.name = Interactive.correctCase(dataLine[0]);
-        this.totalhp = Integer.parseInt(dataLine[1]);
-        this.hp = this.totalhp - 20;
-        this.type = Interactive.correctCase(dataLine[2]);
-        this.resistance = Interactive.correctCase(dataLine[3]);
-        this.weakness = Interactive.correctCase(dataLine[4]);
-        this.numAttacks = Integer.parseInt(dataLine[5]);
-        this.attacks = getAttacks(Arrays.copyOfRange(dataLine, 6, dataLine.length));
+        this.name       = Interactive.correctCase(dataLine[NAME]);
+        this.totalhp    = Integer.parseInt(dataLine[HP]);
+        this.type       = Interactive.correctCase(dataLine[TYPE]);
+        this.resistance = Interactive.correctCase(dataLine[RESISTANCE]);
+        this.weakness   = Interactive.correctCase(dataLine[WEAKNESS]);
+        this.numAttacks = Integer.parseInt(dataLine[NUMATTACKS]);
+        this.attacks    = getAttacks(Arrays.copyOfRange(dataLine, ATTACKS, dataLine.length));
+        this.hp         = this.totalhp - 20;
     }
 
     private HashSet<Attack> getAttacks(String[] attackData) {
@@ -75,6 +82,10 @@ public class Pokemon {
 
         for (Attack currentAttack : this.attacks) {
             formattedAttacks += (" " + currentAttack.toString());
+        }
+
+        if (this.attacks.size() < this.ATTACKCAP) {
+            formattedAttacks += String.format("[ %-15s EC: %-3s D: %-3s S: %-10s ]", "N/A", "N/A", "N/A", "N/A");
         }
 
         return formattedAttacks;
