@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -194,16 +195,29 @@ public class Interactive {
         confirmBoxClear(String.format("Professor: Hello there %s! Welcome to the world of POKEMON! My name is Professor Henguin Jiang!", Main.name));
         confirmBoxClear("Professor: I see that you have begun your\njourney to become a Pokemon master!\nBefore you can battle, you must choose your Pokemons!");
 
-        Interactive.delayTypeln(1, "╔═════════════════╦═══════════╦═════════════════╗    ╔═════════════════╦═══════════╦═════════════════╗");
-        Interactive.delayTypeln(1, String.format("║ Num ║ %-15s ║ %-3s ║ %-15s ║    ║ %-15s ║ %-9s ║ %-15s ║", "Name", "HP", "Type", "Name", "HP", "Type"));
-        Interactive.delayTypeln(1, "╠═════════════════╬═══════════╬═════════════════╣    ╠═════════════════╬═══════════╬═════════════════╣");
+        String line;
 
-        for (int i = 0; i < Main.pokemonAvailable.size() / 2; i++) {
-            delayTypeln(1, Main.pokemonAvailable.get(i).toCard());
-            //delayTypeln(1, String.format("║ %3d ", i) + Main.pokemonAvailable.get(i).toStringSimple() + String.format("║ %3d", i + Main.pokemonAvailable.size() / 2) + Main.pokemonAvailable.get(i + Main.pokemonAvailable.size() / 2).toStringSimple());
+        for (int i = 0; i < Main.pokemonAvailable.size(); i += 3) {
+
+            String[][] cardArray = new String[][]{
+                    Main.pokemonAvailable.get(i).toCard(i).split("\n"),
+                    Main.pokemonAvailable.get(i + 1).toCard(i + 1).split("\n"),
+                    Main.pokemonAvailable.get(i + 2).toCard(i + 2).split("\n")
+            };
+
+            for (int y = 0; y < 7; y++) {
+
+                line = "";
+
+                for (String[] card : cardArray) {
+                    line += (line.length() > 0) ? " " + card[y] : card[y];
+                }
+
+                delayTypeln(1, line);
+            }
+
+            delayTypeln(1, Main.pokemonAvailable.get(i).toCard(i));
         }
-
-        Interactive.delayTypeln(1, "╚═════════════════╩═══════════╩═════════════════╝    ╚═════════════════╩═══════════╩═════════════════╝");
 
         confirmBox("");
     }

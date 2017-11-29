@@ -99,13 +99,13 @@ public class Pokemon {
         return String.format("║ %-12s ║ %-3d ║ %-12s ║ %-12s ║ %-12s ║", this.name, this.totalhp, this.type, this.resistance, this.weakness);
     }
 
-    public String toCard() {
-        return String.format("╔═══════════════════════════╗\n" +
-                             "║ %-13s             ║\n" +
-                             "║ HP          %-13d ║\n" +
-                             "║ TYPE        %-13s ║\n" +
-                             "║ RESISTANCE  %-13s ║\n" +
-                             "║ WEAKNESS    %-13s ║\n" +
-                             "╚═══════════════════════════╝", this.name, this.totalhp, this.type, this.resistance, this.weakness);
+    public String toCard(int number) {
+        return String.format("╔═════════════════════════════════╗\n" +
+                             "║ %-3d | NAME        %-13s ║\n" +
+                             "║     | HP          %-13d ║\n" +
+                             "║     | TYPE        %-13s ║\n" +
+                             "║     | RESISTANCE  %-13s ║\n" +
+                             "║     | WEAKNESS    %-13s ║\n" +
+                             "╚═════════════════════════════════╝", number, this.name, this.totalhp, this.type, this.resistance, this.weakness);
     }
 }
