@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -145,9 +148,42 @@ public class Interactive {
     }
 
     public static void introScreen() {
-        // Do the nice intro stuff
+        String data;
         clearConsole();
-        delayTypeln("Pokemon stuff goes here");
+
+        try {
+            BufferedReader pokemonLogoFile = new BufferedReader(new FileReader(new File("ascii/pokemonlogo.txt")));
+
+            while (true){
+                data = pokemonLogoFile.readLine();
+                if (data != null) {
+                    delayTypeln(1, data);
+                }
+                else {
+                    break;
+                }
+            }
+
+        }
+        catch (IOException e) {
+            delayTypeln("Error: FileIO Error");
+        }
+
+        confirmBox("\nWelcome to Pokemon Arena!\n\n" +
+                   "Developed by: Henry Tu\n" +
+                   "github.com/henrytwo\n" +
+                   "henrytu.me\n" +
+                   "Winter 2017 ICS4U\n\n" +
+                   "Data file courtesy of Aaron Li [github.com/dumfing]");
+    }
+
+    public static void credits() {
+
+    }
+
+    public static void choosePokemon() {
+        confirmBoxClear(String.format("Professor: Hello there %s! Welcome to the world of POKEMON! My name is Professor Henguin Jiang!", Main.name));
+        confirmBoxClear("Professor: I see that you have begun your\njourney to become a Pokemon master!\nBefore you can battle, you must choose your Pokemons!");
     }
 
 }

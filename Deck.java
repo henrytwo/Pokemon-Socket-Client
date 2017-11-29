@@ -25,11 +25,15 @@ public class Deck {
         }
     }
 
-    public ArrayList<String> getPokemonName() {
+    public HashMap<String, Pokemon> getPokemonData() {
+        return pokemonData;
+    }
+
+    public ArrayList<String> getPokemonNames() {
         return pokemonName;
     }
 
-    // Gets String Array of Pokemon from ArrayList of Pokemon objects
+    // Gets String Array of Pokemon names from ArrayList of Pokemon objects
     public static String[] getPokemonName(ArrayList<Pokemon> pokemonArray) {
         String[] pokemonNameArray = new String[pokemonArray.size()];
 
@@ -40,8 +44,18 @@ public class Deck {
         return pokemonNameArray;
     }
 
-    public Pokemon getPokemon(String pokemon) {
+    public Pokemon getPokemonObject(String pokemon) {
         return pokemonData.get(pokemon);
+    }
+
+    public static ArrayList<Pokemon> getPokemonObjects(ArrayList<String> pokemonName, HashMap<String, Pokemon> pokemonData) {
+        ArrayList<Pokemon> pokemonArrayList = new ArrayList<>();
+
+        for (String name : pokemonName) {
+            pokemonArrayList.add(pokemonData.get(name));
+        }
+
+        return pokemonArrayList;
     }
 
 }

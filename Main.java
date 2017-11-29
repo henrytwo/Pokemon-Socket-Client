@@ -6,9 +6,10 @@ import java.util.*;
 
 public class Main {
 
-    public static Scanner stdin                      = new Scanner(System.in);
-    public static ArrayList<Pokemon> selectedPokemon = new ArrayList<>();
-    public static Deck deck                          = new Deck("data/pokemon_data.txt");
+    public static Deck deck                           = new Deck("data/pokemon_data.txt");
+    public static Scanner stdin                       = new Scanner(System.in);
+    public static ArrayList<Pokemon> pokemonAvailable = Deck.getPokemonObjects(deck.getPokemonNames(), deck.getPokemonData());
+    public static ArrayList<Pokemon> selectedPokemon  = new ArrayList<>();
 
     public static String name, gameCode, uuid, host;
     public static int port;
@@ -17,24 +18,24 @@ public class Main {
         Interactive.delayType("\033[H\033[2J");
 
         Interactive.introScreen();
-        Interactive.confirmBox("Hello there");
-        Interactive.delayType("Enter name: ");
-
+        Interactive.delayType("What is your name?: ");
         name = stdin.nextLine();
 
-        selectedPokemon.add(deck.getPokemon("Pikachu"));
-        selectedPokemon.add(deck.getPokemon("Lapras"));
-        selectedPokemon.add(deck.getPokemon("Jolteon"));
-        selectedPokemon.add(deck.getPokemon("Flareon"));
+        Interactive.choosePokemon();
 
-        Interactive.delayTypeln(String.format("║ %-15s ║ %-32s ║ %-15s ║ %-15s ║ %-15s ║ %-97s ║", "Name", "HP", "Type", "Resistance", "Weakness", "Attacks"));
+        selectedPokemon.add(deck.getPokemonObject("Pikachu"));
+        selectedPokemon.add(deck.getPokemonObject("Lapras"));
+        selectedPokemon.add(deck.getPokemonObject("Jolteon"));
+        selectedPokemon.add(deck.getPokemonObject("Flareon"));
+
+        Interactive.delayTypeln(String.format("║ %-15s ║ %-9s ║ %-15s ║", "Name", "HP", "Type"));
         for (Pokemon poke : selectedPokemon) {
-           Interactive.delayTypeln(1, poke.toString());
+           Interactive.delayTypeln(1, poke.toStringSimple());
         }
 
         while (true) {
             // Mode select
-            switch (Interactive.singleSelectMenu(String.format("Welcome %s", name), "Select Gamemode", new String[]{"1 vs Computer", "1 vs 1 [WAN Multiplayer]", "1 vs 1 [LAN Multiplayer]", "Exit"})) {
+            switch (Interactive.singleSelectMenu(String.format("Welcome to the Pokemon universe %s!\nHow would you like to battle?", name), "Select Gamemode", new String[]{"1 vs Computer", "1 vs 1 [WAN Multiplayer]", "1 vs 1 [LAN Multiplayer]", "Credits","Exit"})) {
                 case 1:
                     singleplayer();
                     break;
@@ -65,6 +66,9 @@ public class Main {
 
                     break;
                 case 4:
+                    Interactive.credits();
+                    break;
+                case 5:
                     System.exit(0);
             }
         }

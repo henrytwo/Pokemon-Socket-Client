@@ -94,4 +94,9 @@ public class Pokemon {
     public String toString() {
         return String.format("║ %-15s ║ %s [%3d/%-3d] ║ %-15s ║ %-15s ║ %-15s ║%s ║", this.name, this.generateHealthBar(), this.hp, this.totalhp, this.type, this.resistance, this.weakness, this.generateAttacks());
     }
+
+    public String toStringSimple() {
+        return String.format("║ %-15s ║ [%3d/%-3d] ║ %-15s ║", this.name, this.hp, this.totalhp, this.type);
+
+    }
 }
