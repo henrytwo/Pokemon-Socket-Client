@@ -128,11 +128,11 @@ public class Interactive {
         delayType(20, line);
     }
 
-    public static void delayTypeln(int time, String line) {
+    public static void delayTypeln(long time, String line) {
         delayType(time, line + "\n");
     }
 
-    public static void delayType(int time, String line) {
+    public static void delayType(long time, String line) {
         char[] charArray = (line).toCharArray();
 
         for (char character : charArray) {
@@ -175,15 +175,37 @@ public class Interactive {
                    "henrytu.me\n" +
                    "Winter 2017 ICS4U\n\n" +
                    "Data file courtesy of Aaron Li [github.com/dumfing]");
+
+        clearConsole();
+        delayType("What is your name?: ");
+        Main.name = stdin.nextLine();
+
     }
 
     public static void credits() {
-
+        confirmBoxClear("Developed by: Henry Tu\n" +
+                "github.com/henrytwo\n" +
+                "henrytu.me\n" +
+                "Winter 2017 ICS4U\n\n" +
+                "Data file courtesy of Aaron Li [github.com/dumfing]");
     }
 
     public static void choosePokemon() {
         confirmBoxClear(String.format("Professor: Hello there %s! Welcome to the world of POKEMON! My name is Professor Henguin Jiang!", Main.name));
         confirmBoxClear("Professor: I see that you have begun your\njourney to become a Pokemon master!\nBefore you can battle, you must choose your Pokemons!");
+
+        Interactive.delayTypeln(1, "╔═════════════════╦═══════════╦═════════════════╗    ╔═════════════════╦═══════════╦═════════════════╗");
+        Interactive.delayTypeln(1, String.format("║ Num ║ %-15s ║ %-3s ║ %-15s ║    ║ %-15s ║ %-9s ║ %-15s ║", "Name", "HP", "Type", "Name", "HP", "Type"));
+        Interactive.delayTypeln(1, "╠═════════════════╬═══════════╬═════════════════╣    ╠═════════════════╬═══════════╬═════════════════╣");
+
+        for (int i = 0; i < Main.pokemonAvailable.size() / 2; i++) {
+            delayTypeln(1, Main.pokemonAvailable.get(i).toCard());
+            //delayTypeln(1, String.format("║ %3d ", i) + Main.pokemonAvailable.get(i).toStringSimple() + String.format("║ %3d", i + Main.pokemonAvailable.size() / 2) + Main.pokemonAvailable.get(i + Main.pokemonAvailable.size() / 2).toStringSimple());
+        }
+
+        Interactive.delayTypeln(1, "╚═════════════════╩═══════════╩═════════════════╝    ╚═════════════════╩═══════════╩═════════════════╝");
+
+        confirmBox("");
     }
 
 }

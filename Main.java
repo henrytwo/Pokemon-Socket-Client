@@ -15,23 +15,8 @@ public class Main {
     public static int port;
 
     public static void main(String[] args){
-        Interactive.delayType("\033[H\033[2J");
-
         Interactive.introScreen();
-        Interactive.delayType("What is your name?: ");
-        name = stdin.nextLine();
-
         Interactive.choosePokemon();
-
-        selectedPokemon.add(deck.getPokemonObject("Pikachu"));
-        selectedPokemon.add(deck.getPokemonObject("Lapras"));
-        selectedPokemon.add(deck.getPokemonObject("Jolteon"));
-        selectedPokemon.add(deck.getPokemonObject("Flareon"));
-
-        Interactive.delayTypeln(String.format("║ %-15s ║ %-9s ║ %-15s ║", "Name", "HP", "Type"));
-        for (Pokemon poke : selectedPokemon) {
-           Interactive.delayTypeln(1, poke.toStringSimple());
-        }
 
         while (true) {
             // Mode select

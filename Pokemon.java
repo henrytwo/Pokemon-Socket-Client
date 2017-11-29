@@ -24,7 +24,7 @@ public class Pokemon {
         this.weakness   = Interactive.correctCase(dataLine[WEAKNESS]);
         this.numAttacks = Integer.parseInt(dataLine[NUMATTACKS]);
         this.attacks    = getAttacks(Arrays.copyOfRange(dataLine, ATTACKS, dataLine.length));
-        this.hp         = this.totalhp - 20;
+        this.hp         = this.totalhp;
     }
 
     private HashSet<Attack> getAttacks(String[] attackData) {
@@ -96,7 +96,16 @@ public class Pokemon {
     }
 
     public String toStringSimple() {
-        return String.format("║ %-15s ║ [%3d/%-3d] ║ %-15s ║", this.name, this.hp, this.totalhp, this.type);
+        return String.format("║ %-12s ║ %-3d ║ %-12s ║ %-12s ║ %-12s ║", this.name, this.totalhp, this.type, this.resistance, this.weakness);
+    }
 
+    public String toCard() {
+        return String.format("╔═══════════════════════════╗\n" +
+                             "║ %-13s             ║\n" +
+                             "║ HP          %-13d ║\n" +
+                             "║ TYPE        %-13s ║\n" +
+                             "║ RESISTANCE  %-13s ║\n" +
+                             "║ WEAKNESS    %-13s ║\n" +
+                             "╚═══════════════════════════╝", this.name, this.totalhp, this.type, this.resistance, this.weakness);
     }
 }
