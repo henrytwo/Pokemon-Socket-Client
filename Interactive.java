@@ -149,7 +149,7 @@ public class Interactive {
     }
 
     public static void delayln(String line) {
-        delayln(20, line);
+        delayln(10, line);
     }
 
     public static void delayln(long time, String line) {
