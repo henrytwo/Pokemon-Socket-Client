@@ -148,6 +148,21 @@ public class Interactive {
         }
     }
 
+    public static void delayln(String line) {
+        delayln(20, line);
+    }
+
+    public static void delayln(long time, String line) {
+        try {
+            if (line.length() > 0) {
+                Thread.sleep(time);
+            }
+            System.out.println(line);
+        } catch (Exception e) {
+
+        }
+    }
+
     public static void introScreen() {
         String data;
         clearConsole();
@@ -191,19 +206,22 @@ public class Interactive {
                 "Data file courtesy of Aaron Li [github.com/dumfing]");
     }
 
-    public static void choosePokemon() {
-        confirmBoxClear(String.format("Professor: Hello there %s! Welcome to the world of POKEMON! My name is Professor Henguin Jiang!", Main.name));
-        confirmBoxClear("Professor: I see that you have begun your\njourney to become a Pokemon master!\nBefore you can battle, you must choose your Pokemons!");
-
+    public static void displayPokemonCards(ArrayList<Pokemon> pokemonAvailable) {
         String line;
 
-        for (int i = 0; i < Main.pokemonAvailable.size(); i += 3) {
+        for (int i = 0; i < pokemonAvailable.size(); i += 3) {
 
-            String[][] cardArray = new String[][]{
-                    Main.pokemonAvailable.get(i).toCard(i).split("\n"),
-                    Main.pokemonAvailable.get(i + 1).toCard(i + 1).split("\n"),
-                    Main.pokemonAvailable.get(i + 2).toCard(i + 2).split("\n")
-            };
+            ArrayList<String[]> cardArray = new ArrayList<>();
+
+            cardArray.add(pokemonAvailable.get(i).toCard(i).split("\n"));
+
+            if (i + 1 < pokemonAvailable.size()) {
+                cardArray.add(pokemonAvailable.get(i + 1).toCard(i + 1).split("\n"));
+            }
+
+            if (i + 2 < pokemonAvailable.size()) {
+                cardArray.add(pokemonAvailable.get(i + 2).toCard(i + 2).split("\n"));
+            }
 
             for (int y = 0; y < 7; y++) {
 
@@ -213,11 +231,63 @@ public class Interactive {
                     line += (line.length() > 0) ? " " + card[y] : card[y];
                 }
 
-                delayTypeln(1, line);
+                delayln(4, line);
             }
-
-            delayTypeln(1, Main.pokemonAvailable.get(i).toCard(i));
         }
+    }
+
+    public static void pokemonPicker() {
+        int selection;
+
+        for (int round = 0; round < 6; round++) {
+            while (true) {
+
+                clearConsole();
+
+                delayTypeln(String.format("Choosing Pokemon [%d/6]", round + 1));
+                delayTypeln("Enter Pokemon ID to make selection");
+
+                displayPokemonCards(Main.pokemonAvailable);
+
+                delayTypeln(String.format("Choosing Pokemon [%d/6]", round + 1));
+                delayTypeln("Enter Pokemon ID to make selection");
+                delayType("[Enter Selection]> ");
+
+                try {
+                    selection = stdin.nextInt() - 1;
+
+                    if (selection >= 0 && selection <= Main.pokemonAvailable.size()) {
+
+                        clearConsole();
+
+                        if (booleanSelectMenu(String.format("Are you sure you want to select %s [Y/n]?", Main.pokemonAvailable.get(selection).getName()))) {
+                            Main.selectedPokemon.add(Main.pokemonAvailable.get(selection));
+                            Main.pokemonAvailable.remove(selection);
+                            break;
+                        }
+
+                    } else {
+                        confirmBoxClear(String.format("Error: Please enter a valid item from the list <%d-%d>", 1, Main.pokemonAvailable.size()));
+                    }
+                } catch (Exception e) {
+                    stdin.nextLine();
+                    confirmBoxClear(String.format("Error: Please enter a valid item from the list <%d-%d>", 1, Main.pokemonAvailable.size()));
+                }
+            }
+        }
+    }
+
+    public static void choosePokemon() {
+        confirmBoxClear(String.format("Professor: Hello there %s! Welcome to the world of POKEMON! My name is Professor Henguin Jiang!", Main.name));
+        confirmBoxClear("Professor: I see that you have begun your\njourney to become a Pokemon master!\nBefore you can battle, you must choose your Pokemons!");
+
+        pokemonPicker();
+
+        clearConsole();
+
+        delayTypeln("Professor: Excellent! You have selected your 6 Pokemons!\n" +
+                "What a great start on your journey to master Pokemon!\n");
+        displayPokemonCards(Main.selectedPokemon);
 
         confirmBox("");
     }

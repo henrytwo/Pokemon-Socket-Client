@@ -7,6 +7,7 @@ public class Deck {
     private HashMap<String, Pokemon> pokemonData = new HashMap<>();
     private ArrayList<String> pokemonName        = new ArrayList<>();
     private static final int NAME                = 0;
+    public static final int NUMPOKEMON           = 6;
 
     public Deck(String filePath) {
         try {

@@ -106,6 +106,6 @@ public class Pokemon {
                              "║     | TYPE        %-13s ║\n" +
                              "║     | RESISTANCE  %-13s ║\n" +
                              "║     | WEAKNESS    %-13s ║\n" +
-                             "╚═════════════════════════════════╝", number, this.name, this.totalhp, this.type, this.resistance, this.weakness);
+                             "╚═════════════════════════════════╝", number + 1, this.name, this.totalhp, this.type, this.resistance, this.weakness);
     }
 }

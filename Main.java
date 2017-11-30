@@ -20,7 +20,7 @@ public class Main {
 
         while (true) {
             // Mode select
-            switch (Interactive.singleSelectMenu(String.format("Welcome to the Pokemon universe %s!\nHow would you like to battle?", name), "Select Gamemode", new String[]{"1 vs Computer", "1 vs 1 [WAN Multiplayer]", "1 vs 1 [LAN Multiplayer]", "Credits","Exit"})) {
+            switch (Interactive.singleSelectMenu(String.format("Welcome to the Pokemon universe %s!\nHow would you like to battle?", name), "Select Gamemode", new String[]{"1 vs Computer", "1 vs 1 [WAN Multiplayer]", "1 vs 1 [LAN Multiplayer]", "Change Pokemon Selection", "Credits", "Exit"})) {
                 case 1:
                     singleplayer();
                     break;
@@ -51,9 +51,28 @@ public class Main {
 
                     break;
                 case 4:
-                    Interactive.credits();
+                    Interactive.clearConsole();
+
+                    if (Interactive.booleanSelectMenu("Are you sure you want to change Pokemon selection? [Y/n]")) {
+
+                        pokemonAvailable = Deck.getPokemonObjects(deck.getPokemonNames(), deck.getPokemonData());
+                        selectedPokemon  = new ArrayList<>();
+
+                        Interactive.pokemonPicker();
+
+                        Interactive.clearConsole();
+
+                        Interactive.delayTypeln("Pokemon selection has been changed successfully\n");
+                        Interactive.displayPokemonCards(Main.selectedPokemon);
+
+                        Interactive.confirmBox("");
+                    }
+
                     break;
                 case 5:
+                    Interactive.credits();
+                    break;
+                case 6:
                     System.exit(0);
             }
         }
