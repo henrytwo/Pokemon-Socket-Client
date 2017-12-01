@@ -1,10 +1,14 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class Pokemon {
-    private String name, type, resistance, weakness;
-    private int hp, totalhp, numAttacks;
+    private String name, type, resistance, weakness, ascii, dataIn;
+    private int hp, totalhp, numAttacks, energy;
     private HashSet<Attack> attacks;
 
     private static final int ATTACKCAP = 2;
@@ -25,6 +29,28 @@ public class Pokemon {
         this.numAttacks = Integer.parseInt(dataLine[NUMATTACKS]);
         this.attacks    = getAttacks(Arrays.copyOfRange(dataLine, ATTACKS, dataLine.length));
         this.hp         = this.totalhp;
+        this.energy     = 50;
+
+        try {
+            BufferedReader asciiFile = new BufferedReader(new FileReader(new File(String.format("ascii/%s.txt", this.name.toLowerCase().replace(".", "").replace(" ", "-")))));
+
+            while (true){
+                dataIn = asciiFile.readLine();
+                if (dataIn != null) {
+                    this.ascii += dataIn;
+                }
+                else {
+                    break;
+                }
+            }
+
+        }
+        catch (IOException e) {
+            System.out.println(this.name);
+            Interactive.delayTypeln("Error: FileIO Error");
+            this.ascii = String.format("<Pretend this is a %s>", this.name);
+        }
+
     }
 
     private HashSet<Attack> getAttacks(String[] attackData) {
@@ -53,12 +79,24 @@ public class Pokemon {
         return this.weakness;
     }
 
+    public int getNumAttacks() {
+        return this.numAttacks;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     public int getHp() {
         return this.hp;
     }
 
-    public int getNumAttacks() {
-        return this.numAttacks;
+    public int getEnergy() {
+        return this.energy;
     }
 
     public HashSet<Attack> getAttacks() {
@@ -89,6 +127,10 @@ public class Pokemon {
         }
 
         return formattedAttacks;
+    }
+
+    public void draw() {
+
     }
 
     public String toString() {

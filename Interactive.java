@@ -19,8 +19,17 @@ public class Interactive {
         return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
 
+
+    public static int singleSelectMenu(String precaption, String caption, String[] options) {
+        return singleSelectMenu(precaption, caption, options,true);
+    }
+
+    public static int singleSelectMenu(String caption, String[] options, boolean clear) {
+        return singleSelectMenu("", caption, options, clear);
+    }
+
     public static int singleSelectMenu(String caption, String[] options) {
-        return singleSelectMenu("", caption, options);
+        return singleSelectMenu("", caption, options, true);
     }
 
     /* Displays a menu with n items
@@ -32,13 +41,15 @@ public class Interactive {
     *  @param options     String Array with all possible options
     *                     order of items is maintained with index
     */
-    public static int singleSelectMenu(String preCaption, String caption, String[] options) {
+    public static int singleSelectMenu(String preCaption, String caption, String[] options, boolean clear) {
 
         int selection;
 
         while (true) {
 
-            clearConsole();
+            if (clear) {
+                clearConsole();
+            }
 
             if (preCaption.length() > 0) {
                 delayTypeln(preCaption);
@@ -47,15 +58,15 @@ public class Interactive {
             /* Displays table with options
             *  along with corresponding value
             */
-            delayTypeln(5,"╔════════════════════════════════╗");
-            delayTypeln(5,String.format("║ %-30s ║", caption));
-            delayTypeln(5,"╠════╦═══════════════════════════╣");
+            delayTypeln(5,"╔═════════════════════════════════════════════════════════╗");
+            delayTypeln(5,String.format("║ %-55s ║", caption));
+            delayTypeln(5,"╠════╦════════════════════════════════════════════════════╣");
 
             for (int i = 0; i < options.length; i++) {
-                delayTypeln(5,String.format("║ %-2d ║ %-25s ║", i + 1, options[i]));
+                delayTypeln(5,String.format("║ %-2d ║ %-50s ║", i + 1, options[i]));
             }
 
-            delayTypeln(5,"╚════╩═══════════════════════════╝");
+            delayTypeln(5,"╚════╩════════════════════════════════════════════════════╝");
             delayType("[Enter Selection]> ");
 
             /* Reads from Scanner to get
@@ -242,6 +253,13 @@ public class Interactive {
         for (int round = 0; round < 6; round++) {
             while (true) {
 
+                selection = 1;
+                Main.selectedPokemon.add(Main.pokemonAvailable.get(selection));
+                Main.pokemonAvailable.remove(selection);
+                break;
+
+                /*
+
                 clearConsole();
 
                 delayTypeln(String.format("Choosing Pokemon [%d/6]", round + 1));
@@ -272,7 +290,7 @@ public class Interactive {
                 } catch (Exception e) {
                     stdin.nextLine();
                     confirmBoxClear(String.format("Error: Please enter a valid item from the list <%d-%d>", 1, Main.pokemonAvailable.size()));
-                }
+                }*/
             }
         }
     }
@@ -285,11 +303,10 @@ public class Interactive {
 
         clearConsole();
 
-        delayTypeln("Professor: Excellent! You have selected your 6 Pokemons!\n" +
+        delayTypeln("Professor: Excellent! You have selected your 6 Pokemon!\n" +
                 "What a great start on your journey to master Pokemon!\n");
         displayPokemonCards(Main.selectedPokemon);
 
         confirmBox("");
     }
-
 }

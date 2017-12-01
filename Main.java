@@ -79,7 +79,9 @@ public class Main {
     }
 
     public static void singleplayer() {
-        Interactive.delayTypeln("Single player");
+        Opponent opponent = new Opponent();
+        Engine engine = new Engine(opponent);
+        Battle battle = new Battle(engine, selectedPokemon, name, opponent.deck, opponent.getName());
     }
 
     public static void multiplayer() {
