@@ -19,8 +19,9 @@ public class Opponent {
     public Opponent() {
         this.name = computerName();
         this.deck = computerDeck();
-        this.selectedPokemon = deck.get(random.nextInt(deck.size()));
+        this.selectedPokemon = pickPokemon();
     }
+
 
     public static String computerName() {
         ArrayList<String> names = new ArrayList<>();
@@ -46,6 +47,10 @@ public class Opponent {
         }
 
         return names.get(random.nextInt(names.size()));
+    }
+
+    public Pokemon pickPokemon() {
+        return this.deck.get(this.random.nextInt(this.deck.size()));
     }
 
     public String[] computerTurn(String pokemonName, int energy, HashSet<Attack> attackHashSet) {

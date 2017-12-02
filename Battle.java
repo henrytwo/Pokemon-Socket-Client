@@ -22,7 +22,7 @@ public class Battle {
 
         attackStats[attackStats.length - 1] = "Back";
 
-        switch (Interactive.singleSelectMenu(String.format("Select action for %s", pokemonName), new String[] {"Attack", "Retreat", "Pass"}, false)) {
+        switch (Interactive.singleSelectMenu(String.format("Select action for %s", pokemonName), new String[] {"Attack", "Retreat", "Pass", "Info"}, false)) {
             case 1:
                 int attackNum;
 
@@ -42,6 +42,8 @@ public class Battle {
                 return new String[] {"Retreat", playerChoosePokemon(playerPokemons).getName()};
             case 3:
                 return new String[] {"Pass"};
+            case 4:
+                return new String[] {"Info"};
         }
 
         return new String[] {};

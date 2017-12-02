@@ -9,6 +9,7 @@ import java.util.HashSet;
 public class Pokemon {
     private String name, type, resistance, weakness, ascii, dataIn;
     private int hp, totalhp, numAttacks, energy;
+    private boolean disabled = false;
     private HashSet<Attack> attacks;
 
     private static final int ATTACKCAP = 2;
@@ -82,24 +83,32 @@ public class Pokemon {
         return this.numAttacks;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
+    public HashSet<Attack> getAttacks() {
+        return this.attacks;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public boolean getDisabled() {
+        return this.disabled;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
     public int getHp() {
         return this.hp;
     }
 
-    public int getEnergy() {
-        return this.energy;
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
-    public HashSet<Attack> getAttacks() {
-        return this.attacks;
+    public int getEnergy() {
+        return this.energy;
     }
 
     public String generateHealthBar() {

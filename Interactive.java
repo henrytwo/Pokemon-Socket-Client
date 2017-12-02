@@ -6,6 +6,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
+import java.util.concurrent.Delayed;
 
 public class Interactive {
 
@@ -208,6 +209,10 @@ public class Interactive {
         delayType("What is your name?: ");
         Main.name = stdin.nextLine();
 
+        if (Main.name.length() < 1) {
+            Main.name = "Pokemon Trainer";
+        }
+
     }
 
     public static void credits() {
@@ -316,6 +321,17 @@ public class Interactive {
         delayTypeln("Professor: Excellent! You have selected your 6 Pokemon!\n" +
                 "What a great start on your journey to master Pokemon!\n");
         displayPokemonCards(Main.selectedPokemon);
+
+        confirmBox("");
+    }
+
+    public static void winScreen(boolean victory) {
+        if (victory) {
+            delayTypeln("YOU WIN!");
+        }
+        else {
+            delayTypeln("YOU LOST!");
+        }
 
         confirmBox("");
     }
