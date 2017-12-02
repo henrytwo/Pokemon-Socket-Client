@@ -48,14 +48,15 @@ public class Engine {
 
             while (this.playerTurn) {
 
-                if (this.playerPokemons.size() == 0) {
-                    return false;
-                }
-
                 if (this.playerSelectedPokemon.getHp() <= 0) {
+                    this.playerPokemons.remove(this.playerSelectedPokemon);
+
+                    if (this.playerPokemons.size() == 0) {
+                        return false;
+                    }
+
                     Interactive.delayTypeln("Your Pokemon has fainted! You must pick a replacement to continue fighting!");
 
-                    this.playerPokemons.remove(this.playerSelectedPokemon);
                     action = new String[] {"Retreat", battle.playerChoosePokemon(this.playerPokemons).getName()};
                 }
                 else {
@@ -86,7 +87,8 @@ public class Engine {
                 else if (action[0] == "Info") {
                     Interactive.clearConsole();
                     Interactive.delayTypeln("Pokemon Statistics");
-                    Interactive.displayPokemonCards(playerPokemons);
+                    Interactive.displayPokemonCards(this.playerPokemons);
+                    Interactive.displayPokemonCards(this.opponentPokemons);
                 }
                 else if (action[0] != "Back") {
                     ArrayList<Attack> attackArrayList = new ArrayList<>(this.playerSelectedPokemon.getAttacks());
@@ -112,14 +114,14 @@ public class Engine {
             regen();
 
             while (!this.playerTurn) {
-
-                if (this.opponentPokemons.size() == 0) {
-                    return true;
-                }
-
                 if (this.opponentSelectedPokemon.getHp() <= 0) {
                     this.opponentPokemons.remove(this.opponentSelectedPokemon);
-                    action = new String[] {"Retreat", opponent.pickPokemon().getName()};
+
+                    if (this.opponentPokemons.size() == 0) {
+                        return true;
+                    }
+
+                    action = new String[] {"Retreat", this.opponent.pickPokemon(this.opponentPokemons).getName()};
                 }
                 else {
                     action = opponent.computerTurn(this.opponentName, this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
@@ -171,11 +173,11 @@ public class Engine {
 
         int damage = attack.getDamage();
 
-        if (attacker.getType() == target.getResistance()) {
+        if (attacker.getType().equals(target.getResistance())) {
             damage *= 0.5;
             Interactive.delayTypeln("IT'S NOT VERY EFFECTIVE!");
         }
-        else if (attacker.getType() == target.getWeakness()) {
+        else if (attacker.getType().equals(target.getWeakness())) {
             damage *= 2;
             Interactive.delayTypeln("IT'S SUPER EFFECTIVE!");
         }
