@@ -32,18 +32,17 @@ public class Pokemon {
         this.energy     = 50;
 
         try {
-            BufferedReader asciiFile = new BufferedReader(new FileReader(new File(String.format("ascii/%s.txt", this.name.toLowerCase().replace(".", "").replace(" ", "-")))));
+            BufferedReader asciiFile = new BufferedReader(new FileReader(new File(String.format("ascii/%s.txt", this.name.toLowerCase().replace(".", "").replace("'", "").replace(" ", "-")))));
 
             while (true){
                 dataIn = asciiFile.readLine();
                 if (dataIn != null) {
-                    this.ascii += dataIn;
+                    this.ascii += dataIn + "\n";
                 }
                 else {
                     break;
                 }
             }
-
         }
         catch (IOException e) {
             System.out.println(this.name);
@@ -133,6 +132,10 @@ public class Pokemon {
 
     }
 
+    public String getAscii() {
+        return this.ascii;
+    }
+
     public String toString() {
         return String.format("║ %-15s ║ %s [%3d/%-3d] ║ %-15s ║ %-15s ║ %-15s ║%s ║", this.name, this.generateHealthBar(), this.hp, this.totalhp, this.type, this.resistance, this.weakness, this.generateAttacks());
     }
@@ -144,10 +147,11 @@ public class Pokemon {
     public String toCard(int number) {
         return String.format("╔═════════════════════════════════╗\n" +
                              "║ %-3d | NAME        %-13s ║\n" +
-                             "║     | HP          %-13d ║\n" +
+                             "║     | HP          [ %3d/%-3d ]   ║\n" +
+                             "║     | ENERGY      [ %3d/50  ]   ║\n" +
                              "║     | TYPE        %-13s ║\n" +
                              "║     | RESISTANCE  %-13s ║\n" +
                              "║     | WEAKNESS    %-13s ║\n" +
-                             "╚═════════════════════════════════╝", number + 1, this.name, this.totalhp, this.type, this.resistance, this.weakness);
+                             "╚═════════════════════════════════╝", number + 1, this.name, this.hp, this.totalhp, this.energy, this.type, this.resistance, this.weakness);
     }
 }

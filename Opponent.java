@@ -2,8 +2,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Random;
 
 public class Opponent {
@@ -44,6 +46,32 @@ public class Opponent {
         }
 
         return names.get(random.nextInt(names.size()));
+    }
+
+    public String[] computerTurn(String pokemonName, int energy, HashSet<Attack> attackHashSet) {
+
+        ArrayList<Attack> attackArrayList = new ArrayList<>(attackHashSet);
+
+        String[] attackNames = new String[attackArrayList.size()];
+        String[] attackStats = new String[attackArrayList.size()];
+
+        for (int i = 0; i < attackArrayList.size(); i++) {
+            attackNames[i] = attackArrayList.get(i).getName();
+            attackStats[i] = attackArrayList.get(i).toString();
+        }
+
+        ArrayList<Attack> validAttacks = new ArrayList<>();
+
+        for (Attack attack : attackArrayList) {
+            if (energy - attack.getEnergyCost() >= 0) {
+                validAttacks.add(attack);
+            }
+        }
+
+        Collections.shuffle(validAttacks);
+
+        return new String[] {(validAttacks.size() > 0) ? Integer.toString(attackArrayList.indexOf(validAttacks.get(0))) : "Pass"};
+
     }
 
     public Pokemon getSelectedPokemon() {

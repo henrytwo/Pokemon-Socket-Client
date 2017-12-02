@@ -80,8 +80,9 @@ public class Main {
 
     public static void singleplayer() {
         Opponent opponent = new Opponent();
-        Engine engine = new Engine(opponent);
-        Battle battle = new Battle(engine, selectedPokemon, name, opponent.deck, opponent.getName());
+        Battle battle = new Battle();
+
+        Engine engine = new Engine(battle, opponent, selectedPokemon, name, opponent.deck, opponent.getName());
     }
 
     public static void multiplayer() {

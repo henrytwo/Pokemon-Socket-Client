@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Interactive {
@@ -133,11 +134,11 @@ public class Interactive {
     }
 
     public static void delayTypeln(String line) {
-        delayType(20, line + "\n");
+        delayType(10, line + "\n");
     }
 
     public static void delayType(String line) {
-        delayType(20, line);
+        delayType(10, line);
     }
 
     public static void delayTypeln(long time, String line) {
@@ -145,7 +146,7 @@ public class Interactive {
     }
 
     public static void delayType(long time, String line) {
-        char[] charArray = (line).toCharArray();
+        char[] charArray = (line.replaceAll("null", "")).toCharArray();
 
         for (char character : charArray) {
             try {
@@ -160,7 +161,7 @@ public class Interactive {
     }
 
     public static void delayln(String line) {
-        delayln(10, line);
+        delayln(5, line);
     }
 
     public static void delayln(long time, String line) {
@@ -234,7 +235,7 @@ public class Interactive {
                 cardArray.add(pokemonAvailable.get(i + 2).toCard(i + 2).split("\n"));
             }
 
-            for (int y = 0; y < 7; y++) {
+            for (int y = 0; y < 8; y++) {
 
                 line = "";
 
@@ -242,7 +243,7 @@ public class Interactive {
                     line += (line.length() > 0) ? " " + card[y] : card[y];
                 }
 
-                delayln(4, line);
+                delayln(5, line);
             }
         }
     }
@@ -250,15 +251,8 @@ public class Interactive {
     public static void pokemonPicker() {
         int selection;
 
-        for (int round = 0; round < 6; round++) {
+        for (int round = 0; round < Deck.NUMPOKEMON; round++) {
             while (true) {
-
-                selection = 1;
-                Main.selectedPokemon.add(Main.pokemonAvailable.get(selection));
-                Main.pokemonAvailable.remove(selection);
-                break;
-
-                /*
 
                 clearConsole();
 
@@ -284,20 +278,36 @@ public class Interactive {
                             break;
                         }
 
-                    } else {
+                    }
+                    else if (selection == -70) {
+                        clearConsole();
+                        delayTypeln("Automatic Pokemon Selection");
+
+                        ArrayList<Pokemon> pokemonAvailable = Utilities.deepCopy(Main.pokemonAvailable);
+                        Collections.shuffle(pokemonAvailable);
+
+                        for (int i = 0; i < Deck.NUMPOKEMON; i++) {
+                            delayTypeln(String.format("Selected %s", pokemonAvailable.get(i).getName()));
+                            Main.selectedPokemon.add(pokemonAvailable.get(i));
+                            Main.pokemonAvailable.remove(Main.pokemonAvailable.indexOf(pokemonAvailable.get(i)));
+                        }
+
+                        return;
+                    }
+                    else {
                         confirmBoxClear(String.format("Error: Please enter a valid item from the list <%d-%d>", 1, Main.pokemonAvailable.size()));
                     }
                 } catch (Exception e) {
                     stdin.nextLine();
                     confirmBoxClear(String.format("Error: Please enter a valid item from the list <%d-%d>", 1, Main.pokemonAvailable.size()));
-                }*/
+                }
             }
         }
     }
 
     public static void choosePokemon() {
         confirmBoxClear(String.format("Professor: Hello there %s! Welcome to the world of POKEMON! My name is Professor Henguin Jiang!", Main.name));
-        confirmBoxClear("Professor: I see that you have begun your\njourney to become a Pokemon master!\nBefore you can battle, you must choose your Pokemons!");
+        confirmBoxClear("Professor: I see that you have begun your\njourney to become a Pokemon master!\nBefore you can battle, you must choose your Pokemon!");
 
         pokemonPicker();
 
