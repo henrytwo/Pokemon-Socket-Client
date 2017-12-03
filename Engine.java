@@ -193,10 +193,10 @@ public class Engine {
         if (baseDamage > 0) {
             if (attacker.getType().equals(target.getResistance())) {
                 baseDamage *= 0.5;
-                messageBuffer += "IT'S NOT VERY EFFECTIVE!";
+                messageBuffer += "IT'S NOT VERY EFFECTIVE!\n";
             } else if (attacker.getType().equals(target.getWeakness())) {
                 baseDamage *= 2;
-                messageBuffer += "IT'S SUPER EFFECTIVE!";
+                messageBuffer += "IT'S SUPER EFFECTIVE!\n";
             }
         }
 
