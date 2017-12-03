@@ -59,6 +59,11 @@ public class Engine {
 
                     action = new String[] {"Retreat", battle.playerChoosePokemon(this.playerPokemons).getName()};
                 }
+                else if (this.playerSelectedPokemon.getStunned()) {
+                    this.playerSelectedPokemon.setStunned(false);
+                    Interactive.delayTypeln(String.format("%s IS STUNNED!", this.playerSelectedPokemon.getName()));
+                    action = new String[] {"Pass"};
+                }
                 else {
                     action = this.battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon.getName(), this.playerSelectedPokemon.getEnergy(), this.playerSelectedPokemon.getAttacks());
                 }
@@ -123,6 +128,11 @@ public class Engine {
 
                     action = new String[] {"Retreat", this.opponent.pickPokemon(this.opponentPokemons).getName()};
                 }
+                else if (this.opponentSelectedPokemon.getStunned()) {
+                    this.opponentSelectedPokemon.setStunned(false);
+                    Interactive.delayTypeln(String.format("%s IS STUNNED!", this.opponentSelectedPokemon.getName()));
+                    action = new String[] {"Pass"};
+                }
                 else {
                     action = opponent.computerTurn(this.opponentName, this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
                 }
@@ -171,39 +181,67 @@ public class Engine {
 
     public Pokemon action(Pokemon target, Pokemon attacker, Attack attack) {
 
-        int damage = attack.getDamage();
+        int baseDamage = attack.getDamage();
+        int finalDamage;
+        String messageBuffer = "";
+
+        if (attacker.getDisabled()) {
+            baseDamage -= baseDamage - 10 > 0 ? 10 : 0;
+        }
 
         if (attacker.getType().equals(target.getResistance())) {
-            damage *= 0.5;
-            Interactive.delayTypeln("IT'S NOT VERY EFFECTIVE!");
+            baseDamage *= 0.5;
+            messageBuffer += "IT'S NOT VERY EFFECTIVE!";
         }
         else if (attacker.getType().equals(target.getWeakness())) {
-            damage *= 2;
-            Interactive.delayTypeln("IT'S SUPER EFFECTIVE!");
+            baseDamage *= 2;
+            messageBuffer += "IT'S SUPER EFFECTIVE!";
         }
+
+        finalDamage = baseDamage;
 
         if (attack.getSpecial() != "N/A" && random.nextBoolean()) {
             switch (attack.getSpecial()) {
                 case "Stun":
-                    // Stun
+                    if (random.nextBoolean()) {
+                        target.setStunned(true);
+                        messageBuffer += String.format("%s HAS BEEN STUNNED!", target.getName());
+                    }
                     break;
                 case "Wild Card":
-                    // Wild Card
+                    if (random.nextBoolean()) {
+                        finalDamage = 0;
+                        messageBuffer = String.format("%s MISSED! NO DAMAGE INFLICTED!", attacker.getName());
+                    }
                     break;
                 case "Wild Storm":
-                    // Wild Storm
+                    while (true) {
+                        if (random.nextBoolean()) {
+                            finalDamage += baseDamage;
+                            messageBuffer += "\nWild Storm succeeded! Attack repeated!";
+                        }
+                        else {
+                            messageBuffer += (finalDamage == baseDamage) ? "\nWild Storm missed!" : "";
+                            break;
+                        }
+                    }
                     break;
                 case "Disable":
-                    // Disable
+                    if (!target.getDisabled()) {
+                        messageBuffer += String.format("%s HAS BEEN DISABLED!", target.getName());
+                        target.setDisabled(true);
+                    }
                     break;
                 case "Recharge":
-                    // Recharge
+                    messageBuffer += String.format("RECHARGE APPLIED TO %s!", attacker.getName());
                     break;
             }
         }
 
-        Interactive.delayTypeln(String.format("%s INFLICTED %d DAMAGE ON %S!", attacker.getName(), damage, target.getName()));
-        target.setHp((target.getHp() - damage < 0) ? 0 : target.getHp() - damage);
+        Interactive.delayTypeln(messageBuffer);
+
+        Interactive.delayTypeln(String.format("%s INFLICTED %d DAMAGE ON %S!", attacker.getName(), finalDamage, target.getName()));
+        target.setHp((target.getHp() - finalDamage < 0) ? 0 : target.getHp() - finalDamage);
 
         if (target.getHp() <= 0) {
             Interactive.delayTypeln(String.format("%s HAS FAINTED!", target.getName()));

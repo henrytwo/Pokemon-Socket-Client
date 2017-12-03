@@ -326,6 +326,8 @@ public class Interactive {
     }
 
     public static void winScreen(boolean victory) {
+        clearConsole();
+
         if (victory) {
             delayTypeln("YOU WIN!");
         }

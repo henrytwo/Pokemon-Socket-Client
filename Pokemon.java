@@ -10,6 +10,7 @@ public class Pokemon {
     private String name, type, resistance, weakness, ascii, dataIn;
     private int hp, totalhp, numAttacks, energy;
     private boolean disabled = false;
+    private boolean stunned  = false;
     private HashSet<Attack> attacks;
 
     private static final int ATTACKCAP = 2;
@@ -85,6 +86,14 @@ public class Pokemon {
 
     public HashSet<Attack> getAttacks() {
         return this.attacks;
+    }
+
+    public void setStunned(boolean stunned) {
+        this.stunned = stunned;
+    }
+
+    public boolean getStunned() {
+        return this.stunned;
     }
 
     public void setDisabled(boolean disabled) {
