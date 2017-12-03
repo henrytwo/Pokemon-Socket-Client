@@ -8,7 +8,7 @@ public class Battle {
 
     private int selection;
 
-    public String[] getUserAction(ArrayList<Pokemon> playerPokemons, String pokemonName, int energy, HashSet<Attack> attackHashSet) {
+    public String[] getUserAction(ArrayList<Pokemon> playerPokemons, String pokemonName, Pokemon playerPokemon, int energy, HashSet<Attack> attackHashSet) {
 
         ArrayList<Attack> attackArrayList = new ArrayList<>(attackHashSet);
 
@@ -22,6 +22,7 @@ public class Battle {
 
         attackStats[attackStats.length - 1] = "Back";
 
+        Interactive.delayTypeln(playerPokemon.toStringSimple());
         switch (Interactive.singleSelectMenu(String.format("Select action for %s", pokemonName), new String[] {"Attack", "Retreat", "Pass", "Info"}, false)) {
             case 1:
                 int attackNum;

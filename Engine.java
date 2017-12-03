@@ -65,7 +65,8 @@ public class Engine {
                     action = new String[] {"Pass"};
                 }
                 else {
-                    action = this.battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon.getName(), this.playerSelectedPokemon.getEnergy(), this.playerSelectedPokemon.getAttacks());
+                    Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.playerName));
+                    action = this.battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon.getName(), this.playerSelectedPokemon, this.playerSelectedPokemon.getEnergy(), this.playerSelectedPokemon.getAttacks());
                 }
 
                 if (action[0] == "Pass") {
@@ -133,6 +134,7 @@ public class Engine {
                     action = new String[] {"Pass"};
                 }
                 else {
+                    Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.opponentName));
                     action = opponent.computerTurn(this.opponentName, this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
                 }
 

@@ -159,7 +159,7 @@ public class Pokemon {
     }
 
     public String toStringSimple() {
-        return String.format("║ %-12s ║ %-3d ║ %-12s ║ %-12s ║ %-12s ║", this.name, this.totalhp, this.type, this.resistance, this.weakness);
+        return String.format(" %-12s ║ HP: %s [%3d/%-3d] ║ E: [%3d/50 ] ", this.name, this.generateHealthBar(), this.hp, this.totalhp, this.energy);
     }
 
     public String toCard(int number) {
