@@ -93,7 +93,6 @@ public class Engine {
                     Interactive.clearConsole();
                     Interactive.delayTypeln("Pokemon Statistics");
                     Interactive.displayPokemonCards(this.playerPokemons);
-                    Interactive.displayPokemonCards(this.opponentPokemons);
                 }
                 else if (action[0] != "Back") {
                     ArrayList<Attack> attackArrayList = new ArrayList<>(this.playerSelectedPokemon.getAttacks());
@@ -189,13 +188,14 @@ public class Engine {
             baseDamage -= baseDamage - 10 > 0 ? 10 : 0;
         }
 
-        if (attacker.getType().equals(target.getResistance())) {
-            baseDamage *= 0.5;
-            messageBuffer += "IT'S NOT VERY EFFECTIVE!";
-        }
-        else if (attacker.getType().equals(target.getWeakness())) {
-            baseDamage *= 2;
-            messageBuffer += "IT'S SUPER EFFECTIVE!";
+        if (baseDamage > 0) {
+            if (attacker.getType().equals(target.getResistance())) {
+                baseDamage *= 0.5;
+                messageBuffer += "IT'S NOT VERY EFFECTIVE!";
+            } else if (attacker.getType().equals(target.getWeakness())) {
+                baseDamage *= 2;
+                messageBuffer += "IT'S SUPER EFFECTIVE!";
+            }
         }
 
         finalDamage = baseDamage;
@@ -206,6 +206,9 @@ public class Engine {
                     if (random.nextBoolean()) {
                         target.setStunned(true);
                         messageBuffer += String.format("%s HAS BEEN STUNNED!", target.getName());
+                    }
+                    else {
+                        messageBuffer += String.format("%s DODGED THE STUN!", target.getName());
                     }
                     break;
                 case "Wild Card":
@@ -230,6 +233,9 @@ public class Engine {
                     if (!target.getDisabled()) {
                         messageBuffer += String.format("%s HAS BEEN DISABLED!", target.getName());
                         target.setDisabled(true);
+                    }
+                    else {
+                        messageBuffer += String.format("%s DODGED THE DISABLE!", target.getName());
                     }
                     break;
                 case "Recharge":
