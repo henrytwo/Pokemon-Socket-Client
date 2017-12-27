@@ -255,6 +255,8 @@ public class Interactive {
 
     public static void pokemonPicker() {
         int selection;
+        String entry;
+        boolean found, selected;
 
         for (int round = 0; round < Deck.NUMPOKEMON; round++) {
             while (true) {
@@ -268,39 +270,70 @@ public class Interactive {
 
                 delayTypeln(String.format("Choosing Pokemon [%d/6]", round + 1));
                 delayTypeln("Enter Pokemon ID to make selection");
-                delayType("[Enter Selection]> ");
+                delayType("[Enter Selection or Name]> ");
 
                 try {
-                    selection = stdin.nextInt() - 1;
+                    entry = stdin.next();
+                    if (entry.matches("^[0-9]+$")) {
 
-                    if (selection >= 0 && selection <= Main.pokemonAvailable.size()) {
+                        selection = Integer.parseInt(entry) - 1;
 
-                        clearConsole();
+                        if (selection >= 0 && selection <= Main.pokemonAvailable.size()) {
 
-                        if (booleanSelectMenu(String.format("Are you sure you want to select %s [Y/n]?", Main.pokemonAvailable.get(selection).getName()))) {
-                            Main.selectedPokemon.add(Main.pokemonAvailable.get(selection));
-                            Main.pokemonAvailable.remove(selection);
+                            clearConsole();
+
+                            if (booleanSelectMenu(String.format("Are you sure you want to select %s [Y/n]?", Main.pokemonAvailable.get(selection).getName()))) {
+                                Main.selectedPokemon.add(Main.pokemonAvailable.get(selection));
+                                Main.pokemonAvailable.remove(selection);
+                                break;
+                            }
+
+                        } else if (selection == 665) {
+                            clearConsole();
+                            delayTypeln("Automatic Pokemon Selection");
+
+                            ArrayList<Pokemon> pokemonAvailable = Utilities.deepCopy(Main.pokemonAvailable);
+                            Collections.shuffle(pokemonAvailable);
+
+                            int left = Deck.NUMPOKEMON - Main.selectedPokemon.size();
+
+                            for (int i = 0; i < left; i++) {
+                                delayTypeln(String.format("Selected %s", pokemonAvailable.get(i).getName()));
+                                Main.selectedPokemon.add(pokemonAvailable.get(i));
+                                Main.pokemonAvailable.remove(Main.pokemonAvailable.indexOf(pokemonAvailable.get(i)));
+                            }
+
+                            return;
+                        } else {
+                            confirmBoxClear(String.format("Error: Please enter a valid item from the list <%d-%d>", 1, Main.pokemonAvailable.size()));
+                        }
+                    }
+                    else {
+                        found = false;
+                        selected = false;
+
+                        for (Pokemon pokemon : Main.pokemonAvailable) {
+                            if (pokemon.getName().toLowerCase().equals(entry.toLowerCase())) {
+
+                                found = true;
+                                clearConsole();
+
+                                if (booleanSelectMenu(String.format("Are you sure you want to select %s [Y/n]?", pokemon.getName()))) {
+                                    Main.selectedPokemon.add(pokemon);
+                                    Main.pokemonAvailable.remove(pokemon);
+                                    selected = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (selected) {
                             break;
                         }
 
-                    }
-                    else if (selection == -70) {
-                        clearConsole();
-                        delayTypeln("Automatic Pokemon Selection");
-
-                        ArrayList<Pokemon> pokemonAvailable = Utilities.deepCopy(Main.pokemonAvailable);
-                        Collections.shuffle(pokemonAvailable);
-
-                        for (int i = 0; i < Deck.NUMPOKEMON; i++) {
-                            delayTypeln(String.format("Selected %s", pokemonAvailable.get(i).getName()));
-                            Main.selectedPokemon.add(pokemonAvailable.get(i));
-                            Main.pokemonAvailable.remove(Main.pokemonAvailable.indexOf(pokemonAvailable.get(i)));
+                        if (!found) {
+                            confirmBoxClear("Error: Please enter a valid Pokemon name!");
                         }
-
-                        return;
-                    }
-                    else {
-                        confirmBoxClear(String.format("Error: Please enter a valid item from the list <%d-%d>", 1, Main.pokemonAvailable.size()));
                     }
                 } catch (Exception e) {
                     stdin.nextLine();

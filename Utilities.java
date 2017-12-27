@@ -16,4 +16,13 @@ public class Utilities {
 
         return newArrayList;
     }
+
+    public static <T> int indexOf(T[]field, T target) {
+        for (int i = 0; i < field.length; i++) {
+            if (field[i].equals(target)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

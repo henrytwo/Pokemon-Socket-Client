@@ -22,7 +22,6 @@ public class Opponent {
         this.selectedPokemon = pickPokemon(this.deck);
     }
 
-
     public static String computerName() {
         ArrayList<String> names = new ArrayList<>();
         String line;

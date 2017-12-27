@@ -22,8 +22,9 @@ public class Engine {
         this.playerTurn = random.nextBoolean();
 
         this.opponentSelectedPokemon = opponent.getSelectedPokemon();
-        this.playerSelectedPokemon = battle.playerChoosePokemon(this.playerPokemons);
+        this.playerSelectedPokemon = Battle.playerChoosePokemon(this.playerPokemons);
 
+        Interactive.clearConsole();
         Interactive.winScreen(game());
     }
 
@@ -66,7 +67,7 @@ public class Engine {
                 }
                 else {
                     Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.playerName));
-                    action = this.battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon.getName(), this.playerSelectedPokemon, this.playerSelectedPokemon.getEnergy(), this.playerSelectedPokemon.getAttacks());
+                    action = this.battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon);
                 }
 
                 if (action[0] == "Pass") {
@@ -101,7 +102,7 @@ public class Engine {
                     if (this.playerSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost() >= 0) {
                         this.playerSelectedPokemon.setEnergy(this.playerSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost());
 
-                        Interactive.clearConsole();
+                        //Interactive.clearConsole();
                         Interactive.delayTypeln(1, this.playerSelectedPokemon.getAscii());
                         Interactive.delayTypeln(String.format("%s: %s, USE %s!", this.playerName, this.playerSelectedPokemon.getName(), attackArrayList.get(Integer.parseInt(action[0])).getName()));
 
@@ -164,7 +165,7 @@ public class Engine {
                     if (this.opponentSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost() >= 0) {
                         this.opponentSelectedPokemon.setEnergy(this.opponentSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost());
 
-                        Interactive.clearConsole();
+                        //Interactive.clearConsole();
                         Interactive.delayTypeln(1, this.opponentSelectedPokemon.getAscii());
                         Interactive.delayTypeln(String.format("%s: %s, USE %s!", this.opponentName, this.opponentSelectedPokemon.getName(), attackArrayList.get(Integer.parseInt(action[0])).getName()));
 

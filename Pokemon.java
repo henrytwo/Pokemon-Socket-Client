@@ -13,14 +13,14 @@ public class Pokemon {
     private boolean stunned  = false;
     private HashSet<Attack> attacks;
 
-    private static final int ATTACKCAP = 2;
-    private static final int NAME = 0;
-    private static final int HP = 1;
-    private static final int TYPE = 2;
+    private static final int ATTACKCAP  = 2;
+    private static final int NAME       = 0;
+    private static final int HP         = 1;
+    private static final int TYPE       = 2;
     private static final int RESISTANCE = 3;
-    private static final int WEAKNESS = 4;
+    private static final int WEAKNESS   = 4;
     private static final int NUMATTACKS = 5;
-    private static final int ATTACKS = 6;
+    private static final int ATTACKS    = 6;
 
     public Pokemon(String[] dataLine) {
         this.name       = Interactive.correctCase(dataLine[NAME]);
@@ -144,10 +144,6 @@ public class Pokemon {
         }
 
         return formattedAttacks;
-    }
-
-    public void draw() {
-
     }
 
     public String getAscii() {

@@ -66,14 +66,20 @@ public class Communicator {
     *  @param data String of data to be sent
     */
     public String[] get(String data) {
+        return get(true, data);
+    }
+    public String[] get(boolean verbose, String data) {
 
         /* Verifies that Socket is still active
         *  before sending data to avoid crashes.
         */
         if (isAlive) {
             try {
-                Interactive.clearConsole();
-                Interactive.delayTypeln("Communicating...");
+                if (verbose) {
+                    Interactive.clearConsole();
+                    Interactive.delayTypeln("Communicating...");
+                }
+
                 outToServer.write(data);
                 outToServer.flush();
 

@@ -104,7 +104,7 @@ public class Main {
                                                                   "CODE to join the game. (Case sensitive)", gameCode));
 
                         if (Interactive.booleanSelectMenu(String.format("Join this game? <%s> [Y/n]", gameCode))) {
-                            Operations.joinGame(connector);
+                            setupGame(connector);
                             break;
                         } else {
                             break;
@@ -119,7 +119,8 @@ public class Main {
                     Interactive.delayType("[Enter Game Code]> ");
                     gameCode = stdin.next();
 
-                    Operations.joinGame(connector);
+                    setupGame(connector);
+
                     break;
                 case 3:
                     Operations.debugConsole(connector);
@@ -127,6 +128,13 @@ public class Main {
                 case  4:
                     return;
             }
+        }
+    }
+
+    public static void setupGame(Communicator connector) {
+        if (Operations.joinGame(connector)) {
+            Battle battle = new Battle();
+            LocalEngine engine = new LocalEngine(connector, Main.gameCode, Main.uuid, battle, selectedPokemon, name);
         }
     }
 }

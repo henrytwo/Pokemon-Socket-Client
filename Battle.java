@@ -5,15 +5,16 @@ import java.util.Scanner;
 public class Battle {
 
     private static Scanner stdin = new Scanner(System.in);
+    private static int selection;
 
-    private int selection;
+    public String[] getUserAction(ArrayList<Pokemon> playerPokemons, Pokemon playerPokemon) {
 
-    public String[] getUserAction(ArrayList<Pokemon> playerPokemons, String pokemonName, Pokemon playerPokemon, int energy, HashSet<Attack> attackHashSet) {
+        String pokemonName                = playerPokemon.getName();
+        int energy                        = playerPokemon.getEnergy();
 
-        ArrayList<Attack> attackArrayList = new ArrayList<>(attackHashSet);
-
-        String[] attackNames = new String[attackArrayList.size()];
-        String[] attackStats = new String[attackArrayList.size() + 1];
+        ArrayList<Attack> attackArrayList = new ArrayList<>(playerPokemon.getAttacks());
+        String[] attackNames              = new String[attackArrayList.size()];
+        String[] attackStats              = new String[attackArrayList.size() + 1];
 
         for (int i = 0; i < attackArrayList.size(); i++) {
             attackNames[i] = attackArrayList.get(i).getName();
@@ -36,6 +37,7 @@ public class Battle {
                         return new String[] {"Back"};
                     }
                     else if(Interactive.booleanSelectMenu(String.format("Are you sure you want to use %s? [Y/n]", attackNames[attackNum - 1]))) {
+                        Interactive.clearConsole();
                         return new String[] {Integer.toString(attackNum - 1)};
                     }
                 }
@@ -50,7 +52,7 @@ public class Battle {
         return new String[] {};
     }
 
-    public Pokemon playerChoosePokemon(ArrayList<Pokemon> playerPokemons) {
+    public static Pokemon playerChoosePokemon(ArrayList<Pokemon> playerPokemons) {
         while (true) {
             Interactive.clearConsole();
             Interactive.delayTypeln("Pick a Pokemon to use in battle:\n");
@@ -64,6 +66,7 @@ public class Battle {
                     Interactive.clearConsole();
 
                     if (Interactive.booleanSelectMenu(String.format("Are you sure you want to select %s [Y/n]?", playerPokemons.get(selection).getName()))) {
+                        Interactive.clearConsole();
                         return  playerPokemons.get(selection);
                     }
                 } else {
