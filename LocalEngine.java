@@ -29,7 +29,8 @@ public class LocalEngine {
     }
 
     public String game() {
-        this.connector.get(String.format("2 // %s // %s // InitPkmn // %s", this.gameCode, this.uuid, Battle.playerChoosePokemon(Main.selectedPokemon).getName()));
+        this.playerSelectedPokemon = Battle.playerChoosePokemon(Main.selectedPokemon);
+        this.connector.get(String.format("2 // %s // %s // InitPkmn // %s", this.gameCode, this.uuid, this.playerSelectedPokemon.getName()));
 
         String[] messageIn;
         String messageOut = "Ready";
@@ -38,7 +39,7 @@ public class LocalEngine {
         while (true) {
             messageIn = this.connector.get(true, String.format("2 // %s // %s // %s", this.gameCode, this.uuid, messageOut));
 
-            if (messageIn[0] == "2") {
+            if (messageIn[0].equals("2")) {
 
                 if (messageIn.length > 2) {
                     updatePokemons(Arrays.copyOfRange(messageIn, 3, messageIn.length));
@@ -88,9 +89,14 @@ public class LocalEngine {
         Pokemon updatePokemon;
         int updateIndex;
 
-        for (int i = 0; i < this.playerPokemons.size(); i++) {
+        for (int i = this.playerPokemons.size(); i != 0; i--) {
             updatePokemon = this.playerPokemons.get(i);
             updateIndex   = Utilities.indexOf(pokemonData, updatePokemon.getName());
+
+            if (Integer.parseInt(pokemonData[updateIndex + 1]) <= 0) {
+                this.playerPokemons.remove(i);
+                continue;
+            }
 
             updatePokemon.setHp(Integer.parseInt(pokemonData[updateIndex + 1]));
             updatePokemon.setEnergy(Integer.parseInt(pokemonData[updateIndex + 2]));
