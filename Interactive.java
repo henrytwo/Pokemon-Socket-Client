@@ -60,15 +60,15 @@ public class Interactive {
             /* Displays table with options
             *  along with corresponding value
             */
-            delayTypeln(5,"╔═════════════════════════════════════════════════════════╗");
-            delayTypeln(5,String.format("║ %-55s ║", caption));
-            delayTypeln(5,"╠════╦════════════════════════════════════════════════════╣");
+            delayTypeln(3,"╔═════════════════════════════════════════════════════════╗");
+            delayTypeln(3,String.format("║ %-55s ║", caption));
+            delayTypeln(3,"╠════╦════════════════════════════════════════════════════╣");
 
             for (int i = 0; i < options.length; i++) {
-                delayTypeln(5,String.format("║ %-2d ║ %-50s ║", i + 1, options[i]));
+                delayTypeln(3,String.format("║ %-2d ║ %-50s ║", i + 1, options[i]));
             }
 
-            delayTypeln(5,"╚════╩════════════════════════════════════════════════════╝");
+            delayTypeln(3,"╚════╩════════════════════════════════════════════════════╝");
             delayType("[Enter Selection]> ");
 
             /* Reads from Scanner to get
@@ -248,7 +248,7 @@ public class Interactive {
                     line += (line.length() > 0) ? " " + card[y] : card[y];
                 }
 
-                delayln(5, line);
+                delayln(3, line);
             }
         }
     }

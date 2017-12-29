@@ -25,28 +25,43 @@ public class LocalEngine {
         this.playerPokemons = Utilities.deepCopy(playerPokemons);
 
         Interactive.clearConsole();
-        Interactive.delayTypeln(game());
+        Interactive.confirmBoxClear(game());
     }
 
     public String game() {
-        this.playerSelectedPokemon = Battle.playerChoosePokemon(Main.selectedPokemon);
-        this.connector.get(String.format("2 // %s // %s // InitPkmn // %s", this.gameCode, this.uuid, this.playerSelectedPokemon.getName()));
+        this.playerSelectedPokemon = Battle.playerChoosePokemon(this.playerPokemons);
+        this.connector.get(String.format("2 // InitPkmn // %s", this.playerSelectedPokemon.getName()));
 
+        String message;
         String[] messageIn;
         String messageOut = "Ready";
-        System.out.println("Waiting for opponent...");
 
         while (true) {
-            messageIn = this.connector.get(true, String.format("2 // %s // %s // %s", this.gameCode, this.uuid, messageOut));
+            messageIn = this.connector.get(false, String.format("2 // %s", messageOut));
 
             if (messageIn[0].equals("2")) {
 
-                if (messageIn.length > 2) {
+                if (messageIn.length > 2 && !messageIn[1].equals("Result")) {
                     updatePokemons(Arrays.copyOfRange(messageIn, 3, messageIn.length));
                     this.playerSelectedPokemon = getPokemonString(messageIn[2], this.playerPokemons);
                 }
 
                 switch (messageIn[1]) {
+                    case "Draw":
+                        Interactive.delayTypeln(1,getPokemonString(messageIn[2], this.playerPokemons).getAscii());
+                        break;
+
+                    case "Message":
+                        if(messageIn[2].contains("&c")) {
+                            Interactive.clearConsole();
+                            message = messageIn[2].substring(2);
+                        }
+                        else {
+                            message = messageIn[2];
+                        }
+                        Interactive.delayTypeln(message);
+                        messageOut = "Ready";
+                        break;
                     case "Result":
                         return messageIn[2];
                     case "MakeAction":
@@ -74,6 +89,7 @@ public class LocalEngine {
     Result     - Terminate Game w/ outcome
     MakeAction - Tell client to make action
     MakeChoose - Tell client to choose pokemon
+    Message    - Tell client something
      */
 
     public Pokemon getPokemonString(String pokemonName, ArrayList<Pokemon> pokemonArray) {
@@ -89,19 +105,21 @@ public class LocalEngine {
         Pokemon updatePokemon;
         int updateIndex;
 
-        for (int i = this.playerPokemons.size(); i != 0; i--) {
+        for (int i = this.playerPokemons.size() - 1; i >= 0; i--) {
             updatePokemon = this.playerPokemons.get(i);
             updateIndex   = Utilities.indexOf(pokemonData, updatePokemon.getName());
 
-            if (Integer.parseInt(pokemonData[updateIndex + 1]) <= 0) {
-                this.playerPokemons.remove(i);
-                continue;
+            if (updateIndex != -1) {
+                if (Integer.parseInt(pokemonData[updateIndex + 1]) <= 0) {
+                    this.playerPokemons.remove(i);
+                    continue;
+                }
+
+                updatePokemon.setHp(Integer.parseInt(pokemonData[updateIndex + 1]));
+                updatePokemon.setEnergy(Integer.parseInt(pokemonData[updateIndex + 2]));
+
+                this.playerPokemons.set(i, updatePokemon);
             }
-
-            updatePokemon.setHp(Integer.parseInt(pokemonData[updateIndex + 1]));
-            updatePokemon.setEnergy(Integer.parseInt(pokemonData[updateIndex + 2]));
-
-            this.playerPokemons.set(i, updatePokemon);
         }
     }
 }

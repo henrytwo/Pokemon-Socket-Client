@@ -29,7 +29,7 @@ public class Communicator {
     *  @param host     String of IP Address for Socket to bind to
     *  @param port     Integer of Port at Host for socket to bind to
     */
-    public Communicator(String host, int port) {
+    public Communicator(String name, String host, int port) {
         try {
             socketConnection = new Socket();
             socketConnection.connect(new InetSocketAddress(host, port), 5000);
@@ -37,17 +37,14 @@ public class Communicator {
             inFromServer     = new BufferedReader(new InputStreamReader(socketConnection.getInputStream()));
             outToServer      = new PrintWriter(socketConnection.getOutputStream(), true);
 
-            String[] verificationResponse = this.get("3000 // ");
+            String[] verificationResponse = this.get(String.format("3000 // %s", name));
 
             /* Sends CODE 3000 to server to verify
             *  that connection is to proper game
             *  server. (It's possible to connect
             *  to any TCP server successfully)
             */
-            if (verificationResponse.length == 2 && verificationResponse[1].equals("DOCTYPE!")) {
-                Interactive.confirmBoxClear(String.format("Successfully connected to server at: %s:%d", host, port));
-            }
-            else  {
+            if (!(verificationResponse.length == 2 && verificationResponse[1].equals("DOCTYPE!"))) {
                 isAlive = false;
                 Interactive.confirmBoxClear(String.format("Unable to connect to: %s:%d", host, port));
                 socketConnection.close();
@@ -83,7 +80,7 @@ public class Communicator {
                 outToServer.write(data);
                 outToServer.flush();
 
-                inData = inFromServer.readLine();
+                inData = inFromServer.readLine().replace("&n", "\n");
 
                 if (inData != null) {
                     return inData.split(" // ");

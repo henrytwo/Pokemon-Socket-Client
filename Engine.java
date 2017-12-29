@@ -13,16 +13,16 @@ public class Engine {
     private Battle battle;
 
     public Engine(Battle battle, Opponent opponent, ArrayList<Pokemon> playerPokemons, String playerName, ArrayList<Pokemon> opponentPokemons, String opponentName) {
-        this.playerName = playerName;
-        this.opponentName = opponentName;
-        this.playerPokemons = Utilities.deepCopy(playerPokemons);
-        this.opponentPokemons = Utilities.deepCopy(opponentPokemons);
-        this.battle = battle;
-        this.opponent = opponent;
-        this.playerTurn = random.nextBoolean();
+        this.playerName              = playerName;
+        this.opponentName            = opponentName;
+        this.playerPokemons          = Utilities.deepCopy(playerPokemons);
+        this.opponentPokemons        = Utilities.deepCopy(opponentPokemons);
+        this.battle                  = battle;
+        this.opponent                = opponent;
+        this.playerTurn              = random.nextBoolean();
 
         this.opponentSelectedPokemon = opponent.getSelectedPokemon();
-        this.playerSelectedPokemon = Battle.playerChoosePokemon(this.playerPokemons);
+        this.playerSelectedPokemon   = Battle.playerChoosePokemon(this.playerPokemons);
 
         Interactive.clearConsole();
         Interactive.winScreen(game());

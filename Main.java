@@ -86,15 +86,15 @@ public class Main {
     }
 
     public static void multiplayer() {
-        multiplayer("127.0.0.1", 3168);
+        multiplayer("127.0.0.1", 2095);
     }
 
     public static void multiplayer(String host, int port) {
 
-        Communicator connector = new Communicator(host, port);
+        Communicator connector = new Communicator(name, host, port);
 
         while (connector.isAlive) {
-            switch (Interactive.singleSelectMenu(String.format("Welcome %s", name), "RASTERA WAN MULTIPLAYER", new String[]{"Generate Game Code", "Join Game Room", "Debug console", "Exit WAN MULTIPLAYER"})) {
+            switch (Interactive.singleSelectMenu(String.format("Welcome %s\nConnected to server [%s:%d]", name, host, port), "RASTERA LAN MULTIPLAYER", new String[]{"Generate Game Code", "Join Game Room", "Debug console", "Exit WAN MULTIPLAYER"})) {
                 case 1:
                     gameCode = Operations.genCode(connector);
 
@@ -134,7 +134,7 @@ public class Main {
     public static void setupGame(Communicator connector) {
         if (Operations.joinGame(connector)) {
             Battle battle = new Battle();
-            LocalEngine engine = new LocalEngine(connector, Main.gameCode, Main.uuid, battle, selectedPokemon, name);
+            LocalEngine engine = new LocalEngine(connector, Main.gameCode, Main.uuid, battle, Main.selectedPokemon, name);
         }
     }
 }

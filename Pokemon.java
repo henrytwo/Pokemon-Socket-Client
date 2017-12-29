@@ -34,7 +34,7 @@ public class Pokemon {
         this.energy     = 50;
 
         try {
-            BufferedReader asciiFile = new BufferedReader(new FileReader(new File(String.format("ascii/%s.txt", this.name.toLowerCase().replace(".", "").replace("'", "").replace(" ", "-")))));
+            BufferedReader asciiFile = new BufferedReader(new FileReader(new File(String.format("ascii/%s.txt", Utilities.filter(this.name.toLowerCase(), new String[] {".", "'", "-"})))));
 
             while (true){
                 dataIn = asciiFile.readLine();
@@ -51,7 +51,6 @@ public class Pokemon {
             Interactive.delayTypeln("Error: FileIO Error");
             this.ascii = String.format("<Pretend this is a %s>", this.name);
         }
-
     }
 
     private HashSet<Attack> getAttacks(String[] attackData) {

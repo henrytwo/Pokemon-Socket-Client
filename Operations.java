@@ -20,14 +20,10 @@ public class Operations {
 
     public static boolean joinGame(Communicator connector) {
         // Join room
-        String[] data = connector.get(String.format("1 // %s // %s // %s", Main.gameCode, Main.name, String.join(" // ", Deck.getPokemonName(Main.selectedPokemon))));
+        String[] data = connector.get(String.format("1 // %s // %s", Main.gameCode, String.join(" // ", Deck.getPokemonName(Main.selectedPokemon))));
 
         if (data[0].equals("1")) {
-            Main.uuid = data[2];
-
-            Interactive.delayln(String.format("%s\n" +
-                    "Assigned UUID: %s", data[1], data[2]));
-
+            Interactive.delayln(String.format("%s", data[1]));
             return true;
         } else {
             Interactive.confirmBoxClear(String.format("%s", data[1]));

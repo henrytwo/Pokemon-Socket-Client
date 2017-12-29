@@ -25,4 +25,11 @@ public class Utilities {
         }
         return -1;
     }
+
+    public static String filter(String base, String[] target) {
+        for (String kill : target) {
+            base = base.replace(kill, "");
+        }
+        return base;
+    }
 }
