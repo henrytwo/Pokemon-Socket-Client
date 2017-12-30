@@ -34,6 +34,7 @@ public class LocalEngine {
 
         String message;
         String[] messageIn;
+        ArrayList<String> doNotUpdate = new ArrayList<>() {{add("Draw"); add("Message"); add("Result");}};
         String messageOut = "Ready";
 
         while (true) {
@@ -41,7 +42,7 @@ public class LocalEngine {
 
             if (messageIn[0].equals("2")) {
 
-                if (messageIn.length > 2 && !messageIn[1].equals("Result")) {
+                if (messageIn.length > 2 && !doNotUpdate.contains(messageIn[1])) {
                     updatePokemons(Arrays.copyOfRange(messageIn, 3, messageIn.length));
                     this.playerSelectedPokemon = getPokemonString(messageIn[2], this.playerPokemons);
                 }
@@ -69,6 +70,12 @@ public class LocalEngine {
                         break;
                     case "MakeChoose":
                         messageOut = String.format("Choose // %s", battle.playerChoosePokemon(this.playerPokemons).getName());
+                        break;
+                    case "Info":
+                        Interactive.clearConsole();
+                        Interactive.delayTypeln("Pokemon Statistics");
+                        Interactive.displayPokemonCards(this.playerPokemons);
+                        messageOut = "Ready";
                         break;
                 }
             }
