@@ -44,12 +44,14 @@ public class LocalEngine {
 
                 if (messageIn.length > 2 && !doNotUpdate.contains(messageIn[1])) {
                     updatePokemons(Arrays.copyOfRange(messageIn, 3, messageIn.length));
-                    this.playerSelectedPokemon = getPokemonString(messageIn[2], this.playerPokemons);
+                    if (this.playerPokemons.contains(messageIn[2])) {
+                        this.playerSelectedPokemon = getPokemonString(messageIn[2], this.playerPokemons);
+                    }
                 }
 
                 switch (messageIn[1]) {
                     case "Draw":
-                        Interactive.delayTypeln(1,getPokemonString(messageIn[2], this.playerPokemons).getAscii());
+                        Interactive.delayTypeln(1,getPokemonString(messageIn[2], Main.allPokemon).getAscii());
                         break;
 
                     case "Message":

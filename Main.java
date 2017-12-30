@@ -8,7 +8,8 @@ public class Main {
 
     public static Deck deck                           = new Deck("data/pokemon_data.txt");
     public static Scanner stdin                       = new Scanner(System.in);
-    public static ArrayList<Pokemon> pokemonAvailable = Deck.getPokemonObjects(deck.getPokemonNames(), deck.getPokemonData());
+    public static ArrayList<Pokemon> allPokemon       = Deck.getPokemonObjects(deck.getPokemonNames(), deck.getPokemonData());
+    public static ArrayList<Pokemon> pokemonAvailable = Utilities.deepCopy(allPokemon);
     public static ArrayList<Pokemon> selectedPokemon  = new ArrayList<>();
 
     public static String name, gameCode, uuid, host;
