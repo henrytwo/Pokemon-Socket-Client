@@ -107,6 +107,10 @@ public class Pokemon {
         this.hp = hp;
     }
 
+    public int getHpTotal() {
+        return this.totalhp;
+    }
+
     public int getHp() {
         return this.hp;
     }

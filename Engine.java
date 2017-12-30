@@ -242,6 +242,7 @@ public class Engine {
                     }
                     break;
                 case "Recharge":
+                    attacker.setHp((attacker.getHp() + 20 > attacker.getHpTotal()) ? attacker.getHpTotal() : attacker.getHp() + 20);
                     messageBuffer += String.format("RECHARGE APPLIED TO %s!", attacker.getName());
                     break;
             }

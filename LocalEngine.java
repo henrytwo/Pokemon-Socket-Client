@@ -68,10 +68,10 @@ public class LocalEngine {
                     case "Result":
                         return messageIn[2];
                     case "MakeAction":
-                        messageOut = String.format("Action // %s", String.join(" // ", battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon)));
+                        messageOut = String.join(" // ", battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon));
                         break;
                     case "MakeChoose":
-                        messageOut = String.format("Choose // %s", battle.playerChoosePokemon(this.playerPokemons).getName());
+                        messageOut = String.format("Retreat // %s", battle.playerChoosePokemon(this.playerPokemons).getName());
                         break;
                     case "Info":
                         Interactive.clearConsole();
