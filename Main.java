@@ -87,7 +87,7 @@ public class Main {
     }
 
     public static void multiplayer() {
-        multiplayer("development.rastera.xyz", 2557);
+        multiplayer("development.rastera.xyz", 3001);
     }
 
     public static void multiplayer(String host, int port) {
