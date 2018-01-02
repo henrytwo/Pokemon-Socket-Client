@@ -87,7 +87,7 @@ public class Main {
     }
 
     public static void multiplayer() {
-        multiplayer("127.0.0.1", 2095);
+        multiplayer("development.rastera.xyz", 2557);
     }
 
     public static void multiplayer(String host, int port) {

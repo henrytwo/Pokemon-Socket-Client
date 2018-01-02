@@ -44,7 +44,7 @@ public class LocalEngine {
 
                 if (messageIn.length > 2 && !doNotUpdate.contains(messageIn[1])) {
                     updatePokemons(Arrays.copyOfRange(messageIn, 3, messageIn.length));
-                    if (this.playerPokemons.contains(messageIn[2])) {
+                    if (getPokemonString(messageIn[2], this.playerPokemons) != null) {
                         this.playerSelectedPokemon = getPokemonString(messageIn[2], this.playerPokemons);
                     }
                 }
@@ -52,8 +52,8 @@ public class LocalEngine {
                 switch (messageIn[1]) {
                     case "Draw":
                         Interactive.delayTypeln(1,getPokemonString(messageIn[2], Main.allPokemon).getAscii());
+                        messageOut = "Ready";
                         break;
-
                     case "Message":
                         if(messageIn[2].contains("&c")) {
                             Interactive.clearConsole();
@@ -113,6 +113,7 @@ public class LocalEngine {
     public void updatePokemons(String[] pokemonData) {
         Pokemon updatePokemon;
         int updateIndex;
+        int kill = -1;
 
         for (int i = this.playerPokemons.size() - 1; i >= 0; i--) {
             updatePokemon = this.playerPokemons.get(i);
@@ -120,7 +121,7 @@ public class LocalEngine {
 
             if (updateIndex != -1) {
                 if (Integer.parseInt(pokemonData[updateIndex + 1]) <= 0) {
-                    this.playerPokemons.remove(i);
+                    kill = i;
                     continue;
                 }
 
@@ -130,5 +131,10 @@ public class LocalEngine {
                 this.playerPokemons.set(i, updatePokemon);
             }
         }
+
+        if (kill != -1) {
+            this.playerPokemons.remove(kill);
+        }
+
     }
 }
