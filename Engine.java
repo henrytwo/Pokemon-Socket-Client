@@ -28,14 +28,11 @@ public class Engine {
         Interactive.winScreen(game());
     }
 
-    public void regen() {
-        for (Pokemon pokemon : this.playerPokemons) {
+    public ArrayList<Pokemon> regen(ArrayList<Pokemon> party) {
+        for (Pokemon pokemon : party) {
             pokemon.setEnergy((pokemon.getEnergy() + 10 > 50) ? 50 : pokemon.getEnergy() + 10);
         }
-
-        for (Pokemon pokemon : this.opponentPokemons) {
-            pokemon.setEnergy((pokemon.getEnergy() + 10 > 50) ? 50 : pokemon.getEnergy() + 10);
-        }
+        return party;
     }
 
     public boolean game() {
@@ -117,7 +114,7 @@ public class Engine {
                 }
             }
 
-            regen();
+            this.playerPokemons = regen(this.playerPokemons);
 
             while (!this.playerTurn) {
                 if (this.opponentSelectedPokemon.getHp() <= 0) {
@@ -177,7 +174,7 @@ public class Engine {
                 }
             }
 
-            regen();
+            this.opponentPokemons = regen(this.opponentPokemons);
         }
     }
 
