@@ -163,12 +163,12 @@ public class Pokemon {
 
     public String toCard(int number) {
         return String.format("╔═════════════════════════════════╗\n" +
-                             "║ %-3d | NAME        %-13s ║\n" +
+                             "║ %-3s | NAME        %-13s ║\n" +
                              "║     | HP          [ %3d/%-3d ]   ║\n" +
                              "║     | ENERGY      [ %3d/50  ]   ║\n" +
                              "║     | TYPE        %-13s ║\n" +
                              "║     | RESISTANCE  %-13s ║\n" +
                              "║     | WEAKNESS    %-13s ║\n" +
-                             "╚═════════════════════════════════╝", number + 1, this.name, this.hp, this.totalhp, this.energy, this.type, this.resistance, this.weakness);
+                             "╚═════════════════════════════════╝", number != -1 ? number + 1 : "", this.name, this.hp, this.totalhp, this.energy, this.type, this.resistance, this.weakness);
     }
 }
