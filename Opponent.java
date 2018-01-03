@@ -52,9 +52,7 @@ public class Opponent {
         return deck.get(this.random.nextInt(deck.size()));
     }
 
-    public String[] computerTurn(String pokemonName, int energy, HashSet<Attack> attackHashSet) {
-
-        ArrayList<Attack> attackArrayList = new ArrayList<>(attackHashSet);
+    public String[] computerTurn(String pokemonName, int energy, ArrayList<Attack> attackArrayList) {
 
         String[] attackNames = new String[attackArrayList.size()];
         String[] attackStats = new String[attackArrayList.size()];

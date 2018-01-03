@@ -12,13 +12,12 @@ public class Battle {
         String pokemonName                = playerPokemon.getName();
         int energy                        = playerPokemon.getEnergy();
 
-        ArrayList<Attack> attackArrayList = new ArrayList<>(playerPokemon.getAttacks());
-        String[] attackNames              = new String[attackArrayList.size()];
-        String[] attackStats              = new String[attackArrayList.size() + 1];
+        String[] attackNames              = new String[playerPokemon.getAttacks().size()];
+        String[] attackStats              = new String[playerPokemon.getAttacks().size() + 1];
 
-        for (int i = 0; i < attackArrayList.size(); i++) {
-            attackNames[i] = attackArrayList.get(i).getName();
-            attackStats[i] = attackArrayList.get(i).toString();
+        for (int i = 0; i < playerPokemon.getAttacks().size(); i++) {
+            attackNames[i] = playerPokemon.getAttacks().get(i).getName();
+            attackStats[i] = playerPokemon.getAttacks().get(i).toString();
         }
 
         attackStats[attackStats.length - 1] = "Back";
@@ -53,8 +52,19 @@ public class Battle {
     }
 
     public static Pokemon playerChoosePokemon(ArrayList<Pokemon> playerPokemons) {
+        return playerChoosePokemon(playerPokemons, true);
+    }
+
+    public static Pokemon playerChoosePokemon(ArrayList<Pokemon> playerPokemons, boolean clear) {
+        boolean initialClear = false;
+
         while (true) {
-            Interactive.clearConsole();
+            if (clear || initialClear) {
+                Interactive.clearConsole();
+            }
+            else if (!clear) {
+                initialClear = true;
+            }
             Interactive.delayTypeln("Pick a Pokemon to use in battle:\n");
             Interactive.displayPokemonCards(playerPokemons);
             Interactive.delayType("[Enter Selection]> ");

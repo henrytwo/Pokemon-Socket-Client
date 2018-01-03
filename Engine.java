@@ -45,6 +45,7 @@ public class Engine {
         while (true) {
 
             while (this.playerTurn) {
+                Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.playerName));
 
                 if (this.playerSelectedPokemon.getHp() <= 0) {
                     this.playerPokemons.remove(this.playerSelectedPokemon);
@@ -55,7 +56,7 @@ public class Engine {
 
                     Interactive.delayTypeln("Your Pokemon has fainted! You must pick a replacement to continue fighting!");
 
-                    action = new String[] {"Retreat", battle.playerChoosePokemon(this.playerPokemons).getName()};
+                    action = new String[] {"Retreat", battle.playerChoosePokemon(this.playerPokemons, false).getName()};
                 }
                 else if (this.playerSelectedPokemon.getStunned()) {
                     this.playerSelectedPokemon.setStunned(false);
@@ -63,12 +64,11 @@ public class Engine {
                     action = new String[] {"Pass"};
                 }
                 else {
-                    Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.playerName));
                     action = this.battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon);
                 }
 
                 if (action[0] == "Pass") {
-                    Interactive.delayTypeln(String.format("%s passed their turn", this.playerName));
+                    Interactive.delayTypeln(String.format("%s passed their turn\n", this.playerName));
 
                     this.playerTurn = !this.playerTurn;
                     break;
@@ -83,7 +83,7 @@ public class Engine {
                     }
 
                     Interactive.delayTypeln(String.format("%s %s", this.playerName, String.format("retreated and switched to %s", this.playerSelectedPokemon.getName())));
-                    Interactive.delayTypeln(String.format("%s: %s I CHOOSE YOU!", this.playerName, this.playerSelectedPokemon.getName()));
+                    Interactive.delayTypeln(String.format("%s: %s I CHOOSE YOU!\n", this.playerName, this.playerSelectedPokemon.getName()));
 
                     this.playerTurn = !this.playerTurn;
                     break;
@@ -94,16 +94,15 @@ public class Engine {
                     Interactive.displayPokemonCards(this.playerPokemons);
                 }
                 else if (action[0] != "Back") {
-                    ArrayList<Attack> attackArrayList = new ArrayList<>(this.playerSelectedPokemon.getAttacks());
 
-                    if (this.playerSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost() >= 0) {
-                        this.playerSelectedPokemon.setEnergy(this.playerSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost());
+                    if (this.playerSelectedPokemon.getEnergy() - this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getEnergyCost() >= 0) {
+                        this.playerSelectedPokemon.setEnergy(this.playerSelectedPokemon.getEnergy() - this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getEnergyCost());
 
                         //Interactive.clearConsole();
                         Interactive.delayTypeln(1, this.playerSelectedPokemon.getAscii());
-                        Interactive.delayTypeln(String.format("%s: %s, USE %s!", this.playerName, this.playerSelectedPokemon.getName(), attackArrayList.get(Integer.parseInt(action[0])).getName()));
+                        Interactive.delayTypeln(String.format("%s: %s, USE %s!", this.playerName, this.playerSelectedPokemon.getName(), this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getName()));
 
-                        this.opponentSelectedPokemon = action(this.opponentSelectedPokemon, this.playerSelectedPokemon, attackArrayList.get(Integer.parseInt(action[0])));
+                        this.opponentSelectedPokemon = action(this.opponentSelectedPokemon, this.playerSelectedPokemon, this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])));
 
                         this.playerTurn = !this.playerTurn;
                         break;
@@ -117,6 +116,8 @@ public class Engine {
             this.playerPokemons = regen(this.playerPokemons);
 
             while (!this.playerTurn) {
+                Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.opponentName));
+
                 if (this.opponentSelectedPokemon.getHp() <= 0) {
                     this.opponentPokemons.remove(this.opponentSelectedPokemon);
 
@@ -132,12 +133,11 @@ public class Engine {
                     action = new String[] {"Pass"};
                 }
                 else {
-                    Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.opponentName));
                     action = opponent.computerTurn(this.opponentName, this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
                 }
 
                 if (action[0] == "Pass") {
-                    Interactive.delayTypeln(String.format("%s passed their turn", this.opponentName));
+                    Interactive.delayTypeln(String.format("%s passed their turn\n", this.opponentName));
 
                     this.playerTurn = !this.playerTurn;
                     break;
@@ -151,7 +151,7 @@ public class Engine {
                     }
 
                     Interactive.delayTypeln(String.format("%s retreated and switched to %s", this.opponentName, this.opponentSelectedPokemon.getName()));
-                    Interactive.delayTypeln(String.format("%s: %s I CHOOSE YOU!", this.opponentName, this.opponentSelectedPokemon.getName()));
+                    Interactive.delayTypeln(String.format("%s: %s I CHOOSE YOU!\n", this.opponentName, this.opponentSelectedPokemon.getName()));
 
                     this.playerTurn = !this.playerTurn;
                     break;
@@ -185,7 +185,8 @@ public class Engine {
         String messageBuffer = "";
 
         if (attacker.getDisabled()) {
-            baseDamage -= baseDamage - 10 > 0 ? 10 : 0;
+            baseDamage = baseDamage - 10 > 0 ? baseDamage - 10 : 0;
+            messageBuffer += String.format("DAMAGE REDUCED TO %d DUE TO DISABLE!\n", baseDamage);
         }
 
         if (baseDamage > 0) {
@@ -200,59 +201,60 @@ public class Engine {
 
         finalDamage = baseDamage;
 
-        if (attack.getSpecial() != "N/A" && random.nextBoolean()) {
+        if (attack.getSpecial() != "N/A") {
             switch (attack.getSpecial()) {
                 case "Stun":
                     if (random.nextBoolean()) {
                         target.setStunned(true);
-                        messageBuffer += String.format("%s HAS BEEN STUNNED!", target.getName());
+                        messageBuffer += String.format("%s HAS BEEN STUNNED!\n", target.getName());
                     }
                     else {
-                        messageBuffer += String.format("%s DODGED THE STUN!", target.getName());
+                        messageBuffer += String.format("%s DODGED THE STUN!\n", target.getName());
                     }
                     break;
-                case "Wild Card":
+                case "Wild card":
                     if (random.nextBoolean()) {
                         finalDamage = 0;
-                        messageBuffer = String.format("%s MISSED! NO DAMAGE INFLICTED!", attacker.getName());
+                        messageBuffer = String.format("%s MISSED! NO DAMAGE INFLICTED!\n", attacker.getName());
                     }
                     break;
-                case "Wild Storm":
+                case "Wild storm":
                     while (true) {
                         if (random.nextBoolean()) {
                             finalDamage += baseDamage;
-                            messageBuffer += "\nWild Storm succeeded! Attack repeated!";
+                            messageBuffer += "Wild Storm succeeded! Attack repeated!\n";
                         }
                         else {
-                            messageBuffer += (finalDamage == baseDamage) ? "\nWild Storm missed!" : "";
+                            messageBuffer += (finalDamage == baseDamage) ? "Wild Storm missed!\n" : "";
                             break;
                         }
                     }
                     break;
                 case "Disable":
                     if (!target.getDisabled()) {
-                        messageBuffer += String.format("%s HAS BEEN DISABLED!", target.getName());
+                        messageBuffer += String.format("%s HAS BEEN DISABLED!\n", target.getName());
                         target.setDisabled(true);
                     }
                     else {
-                        messageBuffer += String.format("%s DODGED THE DISABLE!", target.getName());
+                        messageBuffer += String.format("%s DODGED THE DISABLE!\n", target.getName());
                     }
                     break;
                 case "Recharge":
                     attacker.setHp((attacker.getHp() + 20 > attacker.getHpTotal()) ? attacker.getHpTotal() : attacker.getHp() + 20);
-                    messageBuffer += String.format("RECHARGE APPLIED TO %s!", attacker.getName());
+                    messageBuffer += String.format("RECHARGE APPLIED TO %s!\n", attacker.getName());
                     break;
             }
         }
 
-        Interactive.delayTypeln(messageBuffer);
 
-        Interactive.delayTypeln(String.format("%s INFLICTED %d DAMAGE ON %S!", attacker.getName(), finalDamage, target.getName()));
+        messageBuffer += String.format("%s INFLICTED %d DAMAGE ON %S!\n", attacker.getName(), finalDamage, target.getName());
         target.setHp((target.getHp() - finalDamage < 0) ? 0 : target.getHp() - finalDamage);
 
         if (target.getHp() <= 0) {
-            Interactive.delayTypeln(String.format("%s HAS FAINTED!", target.getName()));
+            messageBuffer += String.format("%s HAS FAINTED!\n", target.getName());
         }
+
+        Interactive.delayTypeln(messageBuffer);
 
         return target;
     }

@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Pokemon {
@@ -11,7 +11,7 @@ public class Pokemon {
     private int hp, totalhp, numAttacks, energy;
     private boolean disabled = false;
     private boolean stunned  = false;
-    private HashSet<Attack> attacks;
+    private ArrayList<Attack> attacks;
 
     private static final int ATTACKCAP  = 2;
     private static final int NAME       = 0;
@@ -53,8 +53,8 @@ public class Pokemon {
         }
     }
 
-    private HashSet<Attack> getAttacks(String[] attackData) {
-        HashSet<Attack> attacks = new HashSet();
+    private ArrayList<Attack> getAttacks(String[] attackData) {
+        ArrayList<Attack> attacks = new ArrayList<>();
 
         for (int index = 0; index < this.numAttacks * 4; index += 4) {
             attacks.add(new Attack(attackData[index], attackData[index + 1], attackData[index + 2], (index + 3) < attackData.length ? attackData[index + 3] : "N/A"));
@@ -83,7 +83,7 @@ public class Pokemon {
         return this.numAttacks;
     }
 
-    public HashSet<Attack> getAttacks() {
+    public ArrayList<Attack> getAttacks() {
         return this.attacks;
     }
 

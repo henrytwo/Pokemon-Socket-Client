@@ -36,6 +36,7 @@ public class LocalEngine {
         String[] messageIn;
         ArrayList<String> doNotUpdate = new ArrayList<>() {{add("Draw"); add("Message"); add("Result");}};
         String messageOut = "Ready";
+        boolean forcedRetreat = false;
 
         while (true) {
             messageIn = this.connector.get(false, String.format("2 // %s", messageOut));
@@ -44,7 +45,10 @@ public class LocalEngine {
 
                 if (messageIn.length > 2 && !doNotUpdate.contains(messageIn[1])) {
                     updatePokemons(Arrays.copyOfRange(messageIn, 3, messageIn.length));
-                    if (getPokemonString(messageIn[2], this.playerPokemons) != null) {
+
+                    forcedRetreat = getPokemonString(messageIn[2], this.playerPokemons) == null;
+
+                    if (!forcedRetreat) {
                         this.playerSelectedPokemon = getPokemonString(messageIn[2], this.playerPokemons);
                     }
                 }
@@ -71,7 +75,7 @@ public class LocalEngine {
                         messageOut = String.join(" // ", battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon));
                         break;
                     case "MakeChoose":
-                        messageOut = String.format("Retreat // %s", battle.playerChoosePokemon(this.playerPokemons).getName());
+                        messageOut = String.format("Retreat // %s", battle.playerChoosePokemon(this.playerPokemons).getName(), !forcedRetreat);
                         break;
                     case "Info":
                         Interactive.clearConsole();
