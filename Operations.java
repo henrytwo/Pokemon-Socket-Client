@@ -1,25 +1,36 @@
-import java.util.Scanner;
+/**
+ * Pokemon Arena
+ * Operations.java
+ *
+ * Class of major socket operations
+ *
+ * ICS4U [2017/2018]
+ * github.com/henrytwo
+ * henrytu.me
+ *
+ * @author Henry Tu
+ */
 
 public class Operations {
-    public static Scanner stdin = new Scanner(System.in);
 
-    public static void debugConsole(Communicator connector) {
-        while (true) {
-            System.out.print("> ");
-            String[] data = connector.get(stdin.nextLine());
-            for (String line : data) {
-                Interactive.delayTypeln(" |" + line);
-            }
-        }
-    }
-
+    /**
+     * Sands Communicator code to generate gameCode
+     *
+     * @param connector        Connector Object
+     * @return                 String with gameCode
+     */
     public static String genCode(Communicator connector) {
         String[] data = connector.get("0 // ");
         return data[0].equals("0") ? data[1] : "-1";
     }
 
+    /**
+     * Sends communicator code to join room
+     *
+     * @param connector        Connector object
+     * @return                 Boolean with status of request
+     */
     public static boolean joinGame(Communicator connector) {
-        // Join room
         String[] data = connector.get(String.format("1 // %s // %s", Main.gameCode, String.join(" // ", Deck.getPokemonName(Main.selectedPokemon))));
 
         if (data[0].equals("1")) {

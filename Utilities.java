@@ -1,12 +1,26 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+/**
+ * Pokemon Arena
+ * Utilities.java
+ *
+ * Class with common utilities
+ *
+ * ICS4U [2017/2018]
+ * github.com/henrytwo
+ * henrytu.me
+ *
+ * @author Henry Tu
+ */
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
 
 public class Utilities {
+    /**
+     * Deep copies iterable
+     *
+     * @param starter          Target object
+     * @param <T>              Target type
+     * @return                 Deep copied object
+     */
     public static <T> ArrayList<T> deepCopy(ArrayList<T> starter) {
         ArrayList<T> newArrayList = new ArrayList<>();
 
@@ -17,6 +31,14 @@ public class Utilities {
         return newArrayList;
     }
 
+    /**
+     * Index of target in iterable
+     *
+     * @param field            Target field
+     * @param target           Target iterable
+     * @param <T>              Target type
+     * @return                 Integer of Target index
+     */
     public static <T> int indexOf(T[]field, T target) {
         for (int i = 0; i < field.length; i++) {
             if (field[i].equals(target)) {
@@ -26,6 +48,13 @@ public class Utilities {
         return -1;
     }
 
+    /**
+     * Filters String array of target characters from base string
+     *
+     * @param base             Base String
+     * @param target           String array of target characters
+     * @return                 Filtered String
+     */
     public static String filter(String base, String[] target) {
         for (String kill : target) {
             base = base.replace(kill, "");

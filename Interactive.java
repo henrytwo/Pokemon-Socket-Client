@@ -1,48 +1,89 @@
+/**
+ * Pokemon Arena
+ * Interactive.java
+ *
+ * Class containing all interactive components
+ *
+ * ICS4U [2017/2018]
+ * github.com/henrytwo
+ * henrytu.me
+ *
+ * @author Henry Tu
+ *
+ */
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
-import java.util.concurrent.Delayed;
 
 public class Interactive {
 
     public static Scanner stdin = new Scanner(System.in);
 
-    /* Makes first letter of String
-    *  Uppercase
-    *
-    *  @param word     String with initial word to be capitalized
-    */
+    /**
+     * Makes first letter of String Uppercase
+     *
+     *  @param word       String with initial word to be capitalized
+     */
     public static String correctCase(String word) {
         return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
 
-
+    /**
+     * Helper method for singleSelectMenu
+     * Generates numerical menu based on String[] of options
+     *
+     * @param precaption   Caption displayed before menu
+     * @param caption      Main Caption displayed on menu
+     * @param options      String array with options
+     * @return             Integer with array index of selected item
+     */
     public static int singleSelectMenu(String precaption, String caption, String[] options) {
         return singleSelectMenu(precaption, caption, options,true);
     }
 
+
+    /**
+     * Helper method for singleSelectMenu
+     * Generates numerical menu based on String[] of options
+     *
+     * @param caption      Main Caption displayed on menu
+     * @param options      String array with options
+     * @param clear        Whether to clear screen before menu is displayed
+     * @return             Integer with array index of selected item
+     */
     public static int singleSelectMenu(String caption, String[] options, boolean clear) {
         return singleSelectMenu("", caption, options, clear);
     }
 
+    /**
+     * Helper method for singleSelectMenu
+     * Generates numerical menu based on String[] of options
+     *
+     * @param caption      Main Caption displayed on menu
+     * @param options      String array with options
+     * @return             Integer with array index of selected item
+     */
     public static int singleSelectMenu(String caption, String[] options) {
         return singleSelectMenu("", caption, options, true);
     }
 
-    /* Displays a menu with n items
-    *  and returns the index of
-    *  selected item. Verifies that
-    *  selection is found on menu.
-    *
-    *  @param caption     String to be used as the title
-    *  @param options     String Array with all possible options
-    *                     order of items is maintained with index
-    */
+    /**
+     * Displays a menu with n items
+     * and returns the index of
+     * selected item. Verifies that
+     * selection is found on menu.
+     *
+     * @param preCaption
+     * @param caption      String to be used as the title
+     * @param options      String Array with all possible options order of items is maintained with index
+     * @param clear        Whether to clear screen before menu is displayed
+     * @return             Integer with array index of selected item
+     */
     public static int singleSelectMenu(String preCaption, String caption, String[] options, boolean clear) {
 
         int selection;
@@ -57,9 +98,10 @@ public class Interactive {
                 delayTypeln(preCaption);
             }
 
-            /* Displays table with options
-            *  along with corresponding value
-            */
+            /*
+             * Displays table with options
+             * along with corresponding value
+             */
             delayTypeln(3,"╔═════════════════════════════════════════════════════════╗");
             delayTypeln(3,String.format("║ %-55s ║", caption));
             delayTypeln(3,"╠════╦════════════════════════════════════════════════════╣");
@@ -71,11 +113,12 @@ public class Interactive {
             delayTypeln(3,"╚════╩════════════════════════════════════════════════════╝");
             delayType("[Enter Selection]> ");
 
-            /* Reads from Scanner to get
-            *  Input specified by user and
-            *  validates that item
-            *  is found on menu.
-            */
+            /*
+             * Reads from Scanner to get
+             * Input specified by user and
+             * validates that item
+             * is found on menu.
+             */
             try {
                 selection = stdin.nextInt();
 
@@ -93,6 +136,12 @@ public class Interactive {
 
     }
 
+    /**
+     * Displays a caption and presents a [Y/n] prompt
+     *
+     * @param caption      String to be used as Main Caption
+     * @return             Boolean response to caption
+     */
     public static boolean booleanSelectMenu(String caption) {
         while (true) {
 
@@ -113,11 +162,22 @@ public class Interactive {
         }
     }
 
+    /**
+     * Helper Method for confirmBox
+     * Clears Screen before prompt
+     *
+     * @param message      String with message
+     */
     public static void confirmBoxClear(String message) {
         clearConsole();
         confirmBox(message);
     }
 
+    /**
+     * Displays message and prompts for confirmation [Enter]
+     *
+     * @param message      String with message
+     */
     public static void confirmBox(String message) {
         delayTypeln(message);
         delayTypeln("\nPress [Enter] to continue");
@@ -130,22 +190,50 @@ public class Interactive {
         clearConsole();
     }
 
+    /**
+     * Clears the console by calling some magic woodoo
+     */
     public static void clearConsole() {
         System.out.print("\033[H\033[2J");
     }
 
+    /**
+     * Helper Method to delayType
+     * Adds newline character and default delay of 10ms
+     *
+     * @param line         String to be typed
+     */
     public static void delayTypeln(String line) {
         delayType(10, line + "\n");
     }
 
+    /**
+     * Helper Method to delayType
+     * Adds default delay of 10ms
+     *
+     * @param line         String to be typed
+     */
     public static void delayType(String line) {
         delayType(10, line);
     }
 
+    /**
+     * Helper Method to delayType
+     * Adds newline character
+     *
+     * @param time         Integer with delay between chars (ms)
+     * @param line         String to be typed
+     */
     public static void delayTypeln(long time, String line) {
         delayType(time, line + "\n");
     }
 
+    /**
+     * Delays printing String to console by specified time
+     *
+     * @param time         Integer with delay between chars (ms)
+     * @param line         String to be typed
+     */
     public static void delayType(long time, String line) {
         char[] charArray = (line.replaceAll("null", "")).toCharArray();
 
@@ -161,10 +249,22 @@ public class Interactive {
         }
     }
 
+    /**
+     * Delayed printing, line by line
+     * With default delay of 5ms
+     *
+     * @param line         String to be typed
+     */
     public static void delayln(String line) {
         delayln(5, line);
     }
 
+    /**
+     * Delayed printing, line by line
+     *
+     * @param time         Integer with delay between lines (ms)
+     * @param line         String to be typed
+     */
     public static void delayln(long time, String line) {
         try {
             String[] lines = line.replaceAll("null", "").split("\n");
@@ -174,15 +274,18 @@ public class Interactive {
                 }
                 System.out.println(ln);
             }
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
     }
 
+    /**
+     * Game intro sequence
+     * Displays logo and initial dialog with Professor Henning
+     */
     public static void introScreen() {
         String data;
         clearConsole();
 
+        // Reads Pokemon logo from file
         try {
             BufferedReader pokemonLogoFile = new BufferedReader(new FileReader(new File("ascii/pokemonlogo.txt")));
 
@@ -216,7 +319,7 @@ public class Interactive {
         clearConsole();
 
         for (Pokemon pokemon : Main.pokemonAvailable) {
-            if (pokemon.getName().toLowerCase().equals("Nidorino")) {
+            if (pokemon.getName().toLowerCase().equals("nidorino")) {
                 delayln(15, pokemon.getAscii());
                 break;
             }
@@ -239,6 +342,45 @@ public class Interactive {
 
     }
 
+    /**
+     * Initial Pokemon selection screen
+     */
+    public static void choosePokemon() {
+
+        confirmBoxClear("Henning: It's time for you to pick your Pokemon!");
+
+        pokemonPicker();
+
+        clearConsole();
+
+        delayTypeln("Henning: Excellent! You have selected your 6 Pokemon!\n" +
+                "What a great start on your journey to master Pokemon!\n");
+        displayPokemonCards(Main.selectedPokemon);
+
+        confirmBox("");
+    }
+
+    /**
+     * End game screen
+     *
+     * @param victory      Boolean with outcome of the game (Player perspective)
+     */
+    public static void winScreen(boolean victory) {
+        clearConsole();
+
+        if (victory) {
+            delayTypeln("YOU WIN!");
+        }
+        else {
+            delayTypeln("YOU LOST!");
+        }
+
+        confirmBox("");
+    }
+
+    /**
+     * Credit Screen
+     */
     public static void credits() {
         confirmBoxClear("Developed by: Henry Tu\n" +
                 "github.com/henrytwo\n" +
@@ -247,6 +389,11 @@ public class Interactive {
                 "Data file courtesy of Aaron Li [github.com/dumfing]");
     }
 
+    /**
+     * Formats Pokemon cards in 3 columns
+     *
+     * @param pokemonAvailable ArrayList of Pokemon to be displayed
+     */
     public static void displayPokemonCards(ArrayList<Pokemon> pokemonAvailable) {
         String line;
 
@@ -264,6 +411,7 @@ public class Interactive {
                 cardArray.add(pokemonAvailable.get(i + 2).toCard(i + 2).split("\n"));
             }
 
+            // Stacks 3 cards side by side
             for (int y = 0; y < 8; y++) {
 
                 line = "";
@@ -277,6 +425,10 @@ public class Interactive {
         }
     }
 
+    /**
+     * Pokemon Selection sequence
+     * Writes output directly to global Pokemon records
+     */
     public static void pokemonPicker() {
         int selection;
         String entry;
@@ -298,10 +450,13 @@ public class Interactive {
 
                 try {
                     entry = stdin.next();
+
+                    // Numerical Input
                     if (entry.matches("^[0-9]+$")) {
 
                         selection = Integer.parseInt(entry) - 1;
 
+                        // Standard Numerical Input
                         if (selection >= 0 && selection <= Main.pokemonAvailable.size()) {
 
                             clearConsole();
@@ -315,10 +470,13 @@ public class Interactive {
                                 break;
                             }
 
-                        } else if (selection == 665) {
+                        }
+                        // Automatic Selection
+                        else if (selection == 665) {
                             clearConsole();
                             delayTypeln("Automatic Pokemon Selection");
 
+                            // Randomly picks pokemon
                             ArrayList<Pokemon> pokemonAvailable = Utilities.deepCopy(Main.pokemonAvailable);
                             Collections.shuffle(pokemonAvailable);
 
@@ -335,10 +493,13 @@ public class Interactive {
                             confirmBoxClear(String.format("Error: Please enter a valid item from the list <%d-%d>", 1, Main.pokemonAvailable.size()));
                         }
                     }
+
+                    // Name based input
                     else {
                         found = false;
                         selected = false;
 
+                        // Searches for Pokemon Object matching name
                         for (Pokemon pokemon : Main.pokemonAvailable) {
                             if (pokemon.getName().toLowerCase().equals(entry.toLowerCase())) {
 
@@ -370,31 +531,4 @@ public class Interactive {
         }
     }
 
-    public static void choosePokemon() {
-
-        confirmBoxClear("Henning: It's time for you to pick your Pokemon!");
-
-        pokemonPicker();
-
-        clearConsole();
-
-        delayTypeln("Henning: Excellent! You have selected your 6 Pokemon!\n" +
-                "What a great start on your journey to master Pokemon!\n");
-        displayPokemonCards(Main.selectedPokemon);
-
-        confirmBox("");
-    }
-
-    public static void winScreen(boolean victory) {
-        clearConsole();
-
-        if (victory) {
-            delayTypeln("YOU WIN!");
-        }
-        else {
-            delayTypeln("YOU LOST!");
-        }
-
-        confirmBox("");
-    }
 }

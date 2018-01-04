@@ -1,7 +1,20 @@
-import java.lang.reflect.Array;
+/**
+ * Pokemon Arena
+ * LocalEngine.java
+ *
+ * Class for LocalEngine
+ * Interface between Server and UI
+ *
+ * ICS4U [2017/2018]
+ * github.com/henrytwo
+ * henrytu.me
+ *
+ * @author Henry Tu
+ *
+ */
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Random;
 
 public class LocalEngine {
@@ -14,6 +27,16 @@ public class LocalEngine {
     private Battle battle;
     private Communicator connector;
 
+    /**
+     * Constructor method for LocalEngine
+     *
+     * @param connector        Communicator object
+     * @param gameCode         String with client gameCode
+     * @param uuid             String with client uuid
+     * @param battle           Battle object for Battle UI
+     * @param playerPokemons   ArrayList of player's Pokemon
+     * @param playerName       String of player's name
+     */
     public LocalEngine(Communicator connector, String gameCode, String uuid, Battle battle, ArrayList<Pokemon> playerPokemons, String playerName) {
 
         this.connector = connector;
@@ -28,7 +51,14 @@ public class LocalEngine {
         Interactive.confirmBoxClear(game());
     }
 
+    /**
+     * Main gameloop
+     * Handles all gameplay aside from logic
+     *
+     * @return                 String with game outcome
+     */
     public String game() {
+        // Sends initial pokemon selection
         this.playerSelectedPokemon = Battle.playerChoosePokemon(this.playerPokemons);
         this.connector.get(String.format("2 // InitPkmn // %s", this.playerSelectedPokemon.getName()));
 
@@ -39,13 +69,17 @@ public class LocalEngine {
         boolean forcedRetreat = false;
 
         while (true) {
+            // Sets Communicator to listen
             messageIn = this.connector.get(false, String.format("2 // %s", messageOut));
 
+            // Checks if incoming message is valid (2)
             if (messageIn[0].equals("2")) {
 
+                // Updates local Pokemon data
                 if (messageIn.length > 2 && !doNotUpdate.contains(messageIn[1])) {
                     updatePokemons(Arrays.copyOfRange(messageIn, 3, messageIn.length));
 
+                    // Checks if player was forced to retreat (If selected pokemon no longer exists)
                     forcedRetreat = getPokemonString(messageIn[2], this.playerPokemons) == null;
 
                     if (!forcedRetreat) {
@@ -53,6 +87,7 @@ public class LocalEngine {
                     }
                 }
 
+                // Performs subaction
                 switch (messageIn[1]) {
                     case "Draw":
                         Interactive.delayTypeln(1,getPokemonString(messageIn[2], Main.allPokemon).getAscii());
@@ -92,6 +127,8 @@ public class LocalEngine {
     }
 
     /*
+    Protocol
+
     C >> S
     InitPkmn   - Init Game w/ player data
     Ready      - Client is ready to listen
@@ -105,6 +142,13 @@ public class LocalEngine {
     Message    - Tell client something
      */
 
+    /**
+     * Gets Pokemon object based on String name
+     *
+     * @param pokemonName      String with target Pokemon name
+     * @param pokemonArray     ArrayList with local Pokemon objects
+     * @return                 Pokemon object
+     */
     public Pokemon getPokemonString(String pokemonName, ArrayList<Pokemon> pokemonArray) {
         for (Pokemon pokemon : pokemonArray) {
             if (pokemon.getName().equals(pokemonName)) {
@@ -114,6 +158,11 @@ public class LocalEngine {
         return null;
     }
 
+    /**
+     * Updates local Pokemon ArrayList with new data from server
+     *
+     * @param pokemonData      String array with updated data
+     */
     public void updatePokemons(String[] pokemonData) {
         Pokemon updatePokemon;
         int updateIndex;

@@ -1,3 +1,16 @@
+/**
+ * Pokemon Arena
+ * Engine.java
+ *
+ * Single player game engine
+ *
+ * ICS4U [2017/2018]
+ * github.com/henrytwo
+ * henrytu.me
+ *
+ * @author Henry Tu
+ */
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,11 +25,19 @@ public class Engine {
     private Opponent opponent;
     private Battle battle;
 
-    public Engine(Battle battle, Opponent opponent, ArrayList<Pokemon> playerPokemons, String playerName, ArrayList<Pokemon> opponentPokemons, String opponentName) {
+    /**
+     * Engine constructor
+     *
+     * @param battle           Battle object (Player)
+     * @param opponent         Opponent object (CPU)
+     * @param playerPokemons   ArrayList of player's Pokemon
+     * @param playerName       String of player's name
+     */
+    public Engine(Battle battle, Opponent opponent, ArrayList<Pokemon> playerPokemons, String playerName) {
         this.playerName              = playerName;
-        this.opponentName            = opponentName;
+        this.opponentName            = opponent.getName();
         this.playerPokemons          = Utilities.deepCopy(playerPokemons);
-        this.opponentPokemons        = Utilities.deepCopy(opponentPokemons);
+        this.opponentPokemons        = Utilities.deepCopy(opponent.deck);
         this.battle                  = battle;
         this.opponent                = opponent;
         this.playerTurn              = random.nextBoolean();
@@ -28,6 +49,12 @@ public class Engine {
         Interactive.winScreen(game());
     }
 
+    /**
+     * Adds 10 energy to all Pokemon in party
+     *
+     * @param party            ArrayList of team's Pokemon
+     * @return                 ArrayList of team's Pokemon post regen
+     */
     public ArrayList<Pokemon> regen(ArrayList<Pokemon> party) {
         for (Pokemon pokemon : party) {
             pokemon.setEnergy((pokemon.getEnergy() + 10 > 50) ? 50 : pokemon.getEnergy() + 10);
@@ -35,6 +62,11 @@ public class Engine {
         return party;
     }
 
+    /**
+     * Main game loop
+     *
+     * @return                 Boolean with outcome of game
+     */
     public boolean game() {
 
         String[] action;
@@ -44,12 +76,18 @@ public class Engine {
 
         while (true) {
 
+            // Player turn
+            // Comments for player mirror opponent
+            // Yes, I should've made an abstract class to steamline this...
             while (this.playerTurn) {
                 Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.playerName));
 
+                // COMMAND INPUT
+                // Check if Pokemon still alive
                 if (this.playerSelectedPokemon.getHp() <= 0) {
                     this.playerPokemons.remove(this.playerSelectedPokemon);
 
+                    // End game
                     if (this.playerPokemons.size() == 0) {
                         return false;
                     }
@@ -58,23 +96,29 @@ public class Engine {
 
                     action = new String[] {"Retreat", battle.playerChoosePokemon(this.playerPokemons, false).getName()};
                 }
+                // Check if Pokemon is stunned
                 else if (this.playerSelectedPokemon.getStunned()) {
                     this.playerSelectedPokemon.setStunned(false);
                     Interactive.delayTypeln(String.format("%s IS STUNNED!", this.playerSelectedPokemon.getName()));
                     action = new String[] {"Pass"};
                 }
+                // User input
                 else {
                     action = this.battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon);
                 }
 
+                // COMMAND EXECUTION
+                // Pass
                 if (action[0] == "Pass") {
                     Interactive.delayTypeln(String.format("%s passed their turn\n", this.playerName));
 
                     this.playerTurn = !this.playerTurn;
                     break;
                 }
+                // Retreat
                 else if(action[0] == "Retreat") {
 
+                    // Searches for new Pokemon object
                     for (Pokemon pokemon : this.playerPokemons) {
                         if (pokemon.getName() == action[1]) {
                             this.playerSelectedPokemon = pokemon;
@@ -88,22 +132,26 @@ public class Engine {
                     this.playerTurn = !this.playerTurn;
                     break;
                 }
+                // Info
                 else if (action[0] == "Info") {
                     Interactive.clearConsole();
                     Interactive.delayTypeln("Pokemon Statistics");
                     Interactive.displayPokemonCards(this.playerPokemons);
                 }
+                // Attack
                 else if (action[0] != "Back") {
 
+                    // Checks if attack is valid
                     if (this.playerSelectedPokemon.getEnergy() - this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getEnergyCost() >= 0) {
                         this.playerSelectedPokemon.setEnergy(this.playerSelectedPokemon.getEnergy() - this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getEnergyCost());
 
-                        //Interactive.clearConsole();
                         Interactive.delayTypeln(1, this.playerSelectedPokemon.getAscii());
                         Interactive.delayTypeln(String.format("%s: %s, USE %s!", this.playerName, this.playerSelectedPokemon.getName(), this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getName()));
 
+                        // Executes attack on player
                         this.opponentSelectedPokemon = action(this.opponentSelectedPokemon, this.playerSelectedPokemon, this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])));
 
+                        // Toggles turn and breaks out of loop
                         this.playerTurn = !this.playerTurn;
                         break;
                     }
@@ -113,8 +161,10 @@ public class Engine {
                 }
             }
 
+            // Regen energy
             this.playerPokemons = regen(this.playerPokemons);
 
+            // CPU turn
             while (!this.playerTurn) {
                 Interactive.delayTypeln(String.format("----- %s's TURN! -----", this.opponentName));
 
@@ -133,7 +183,7 @@ public class Engine {
                     action = new String[] {"Pass"};
                 }
                 else {
-                    action = opponent.computerTurn(this.opponentName, this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
+                    action = opponent.computerTurn(this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
                 }
 
                 if (action[0] == "Pass") {
@@ -178,17 +228,31 @@ public class Engine {
         }
     }
 
+    /**
+     * Applies attack to target Pokemon
+     *
+     * @param target           Pokemon object to apply attack to
+     * @param attacker         Pokemon object issuing attack
+     * @param attack           Attack object to be applied
+     * @return                 Target Pokemon object post attack
+     */
     public Pokemon action(Pokemon target, Pokemon attacker, Attack attack) {
 
+        // Attack values
+        // (Attack strength can change based on specials)
         int baseDamage = attack.getDamage();
         int finalDamage;
+
+        // Buffer of messes pertaining to attack
         String messageBuffer = "";
 
+        // Applies disabled bump
         if (attacker.getDisabled()) {
             baseDamage = baseDamage - 10 > 0 ? baseDamage - 10 : 0;
             messageBuffer += String.format("DAMAGE REDUCED TO %d DUE TO DISABLE!\n", baseDamage);
         }
 
+        // Checks if target is resistant/weak to attack
         if (baseDamage > 0) {
             if (attacker.getType().equals(target.getResistance())) {
                 baseDamage *= 0.5;
@@ -199,6 +263,7 @@ public class Engine {
             }
         }
 
+        // Begin special attack sequence
         finalDamage = baseDamage;
 
         if (attack.getSpecial() != "N/A") {
@@ -246,10 +311,13 @@ public class Engine {
             }
         }
 
-
+        // Caps message with final damage
         messageBuffer += String.format("%s INFLICTED %d DAMAGE ON %S!\n", attacker.getName(), finalDamage, target.getName());
+
+        // Applies damage to target
         target.setHp((target.getHp() - finalDamage < 0) ? 0 : target.getHp() - finalDamage);
 
+        // Checks if dead
         if (target.getHp() <= 0) {
             messageBuffer += String.format("%s HAS FAINTED!\n", target.getName());
         }

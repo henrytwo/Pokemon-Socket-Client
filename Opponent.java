@@ -1,11 +1,22 @@
+/**
+ * Pokemon Arena
+ * Opponent.java
+ *
+ * Class of CPU/Opponent
+ *
+ * ICS4U [2017/2018]
+ * github.com/henrytwo
+ * henrytu.me
+ *
+ * @author Henry Tu
+ */
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Array;
+import java.io.IOException;;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Random;
 
 public class Opponent {
@@ -16,12 +27,20 @@ public class Opponent {
 
     private static Random random = new Random();
 
+    /**
+     * Opponent constructor method
+     */
     public Opponent() {
         this.name = computerName();
         this.deck = computerDeck();
         this.selectedPokemon = pickPokemon(this.deck);
     }
 
+    /**
+     * Randomly picks name for Computer
+     *
+     * @return                 String of chosen name for Computer
+     */
     public static String computerName() {
         ArrayList<String> names = new ArrayList<>();
         String line;
@@ -48,19 +67,24 @@ public class Opponent {
         return names.get(random.nextInt(names.size()));
     }
 
+    /**
+     * Computer randomly picks starting Pokemon
+     *
+     * @param deck             ArrayList of Pokemon objects computer can choose from
+     * @return                 Pokemon object computer chose to use
+     */
     public Pokemon pickPokemon(ArrayList<Pokemon> deck) {
         return deck.get(this.random.nextInt(deck.size()));
     }
 
-    public String[] computerTurn(String pokemonName, int energy, ArrayList<Attack> attackArrayList) {
-
-        String[] attackNames = new String[attackArrayList.size()];
-        String[] attackStats = new String[attackArrayList.size()];
-
-        for (int i = 0; i < attackArrayList.size(); i++) {
-            attackNames[i] = attackArrayList.get(i).getName();
-            attackStats[i] = attackArrayList.get(i).toString();
-        }
+    /**
+     * Computer randomly picks action
+     *
+     * @param energy           Integer of current energy level
+     * @param attackArrayList  ArrayList of Attack objects computer can use
+     * @return                 String array of desired actions
+     */
+    public String[] computerTurn(int energy, ArrayList<Attack> attackArrayList) {
 
         ArrayList<Attack> validAttacks = new ArrayList<>();
 
@@ -72,18 +96,32 @@ public class Opponent {
 
         Collections.shuffle(validAttacks);
 
+        // Passes if valid move cannot be made
         return new String[] {(validAttacks.size() > 0) ? Integer.toString(attackArrayList.indexOf(validAttacks.get(0))) : "Pass"};
 
     }
 
+    /**
+     * Computer selected pokemon
+     * @return                 Pokemon object of computer selected pokemon
+     */
     public Pokemon getSelectedPokemon() {
         return this.selectedPokemon;
     }
 
+    /**
+     * Computer name
+     * @return                 String with computer name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Computer picks deck
+     *
+     * @return                 ArrayList of Pokemon objects computer selected
+     */
     public static ArrayList<Pokemon> computerDeck() {
         ArrayList<Pokemon> deck = new ArrayList<>();
 

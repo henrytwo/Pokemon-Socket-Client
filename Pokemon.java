@@ -1,10 +1,23 @@
+/**
+ * Pokemon Arena
+ * Pokemon.java
+ *
+ * Class for Pokemon
+ *
+ * ICS4U [2017/2018]
+ * github.com/henrytwo
+ * henrytu.me
+ *
+ * @author Henry Tu
+ *
+ */
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Pokemon {
     private String name, type, resistance, weakness, ascii, dataIn;
@@ -13,6 +26,7 @@ public class Pokemon {
     private boolean stunned  = false;
     private ArrayList<Attack> attacks;
 
+    // Constant index of data values
     private static final int ATTACKCAP  = 2;
     private static final int NAME       = 0;
     private static final int HP         = 1;
@@ -22,6 +36,11 @@ public class Pokemon {
     private static final int NUMATTACKS = 5;
     private static final int ATTACKS    = 6;
 
+    /**
+     * Pokemon constructor method
+     *
+     * @param dataLine         String array of Pokemon data
+     */
     public Pokemon(String[] dataLine) {
         this.name       = Interactive.correctCase(dataLine[NAME]);
         this.totalhp    = Integer.parseInt(dataLine[HP]);
@@ -33,6 +52,7 @@ public class Pokemon {
         this.hp         = this.totalhp;
         this.energy     = 50;
 
+        // Gets ASCII of Pokemon from file
         try {
             BufferedReader asciiFile = new BufferedReader(new FileReader(new File(String.format("ascii/%s.txt", Utilities.filter(this.name.toLowerCase(), new String[] {".", "'", "-"})))));
 
@@ -53,6 +73,12 @@ public class Pokemon {
         }
     }
 
+    /**
+     * Get ArrayList of Attacks this Pokemon can perform
+     *
+     * @param attackData       String array of attackData
+     * @return                 ArrayList of Attack objects
+     */
     private ArrayList<Attack> getAttacks(String[] attackData) {
         ArrayList<Attack> attacks = new ArrayList<>();
 
@@ -63,66 +89,127 @@ public class Pokemon {
         return attacks;
     }
 
+    /**
+     * Gets name of Pokemon
+     * @return                 String of Pokemon name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Gets type of Pokemon
+     * @return                 String of Pokemon type
+     */
     public String getType() {
         return this.type;
     }
 
+    /**
+     * Gets resistance of Pokemon
+     * @return                 String of Pokemon resistance
+     */
     public String getResistance() {
         return this.resistance;
     }
 
+    /**
+     * Gets weakness of Pokemon
+     * @return                 String of Pokemon weakness
+     */
     public String getWeakness() {
         return this.weakness;
     }
 
-    public int getNumAttacks() {
-        return this.numAttacks;
-    }
-
+    /**
+     * Gets Attacks of Pokemon
+     * @return                 ArrayList of Pokemon Attacks
+     */
     public ArrayList<Attack> getAttacks() {
         return this.attacks;
     }
 
+    /**
+     * Sets stun status of Pokemon
+     *
+     * @param stunned          Boolean of new stun status
+     */
     public void setStunned(boolean stunned) {
         this.stunned = stunned;
     }
 
+    /**
+     * Gets stun status of Pokemon
+     * @return                 Boolean of stun status
+     */
     public boolean getStunned() {
         return this.stunned;
     }
 
+    /**
+     * Sets disabled status of Pokemon
+     *
+     * @param disabled         Boolean of new disabled status
+     */
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
 
+    /**
+     * Gets disabled status of Pokemon
+     * @return                 Boolean of disabled status
+     */
     public boolean getDisabled() {
         return this.disabled;
     }
 
+    /**
+     * Sets Pokemon HP
+     *
+     * @param hp               Integer with new HP level
+     */
     public void setHp(int hp) {
         this.hp = hp;
     }
 
+    /**
+     * Gets total hp of Pokemon
+     * @return                 Integer of HP total
+     */
     public int getHpTotal() {
         return this.totalhp;
     }
 
+    /**
+     * Gets hp of Pokemon
+     * @return                 Integer of current HP
+     */
     public int getHp() {
         return this.hp;
     }
 
+    /**
+     * Sets energy of Pokemon
+     *
+     * @param energy           Integer with new energy level
+     */
     public void setEnergy(int energy) {
         this.energy = energy;
     }
 
+    /**
+     * Gets name of Pokemon
+     * @return                 String of Pokemon name
+     */
     public int getEnergy() {
         return this.energy;
     }
 
+    /**
+     * Generate ASCII health bar
+     *
+     * @return                 String of health bar
+     */
     public String generateHealthBar() {
         String bar = "[";
 
@@ -135,32 +222,29 @@ public class Pokemon {
         return bar + "]";
     }
 
-    public String generateAttacks() {
-        String formattedAttacks = "";
-
-        for (Attack currentAttack : this.attacks) {
-            formattedAttacks += (" " + currentAttack.toString());
-        }
-
-        if (this.attacks.size() < this.ATTACKCAP) {
-            formattedAttacks += String.format("[ %-15s EC: %-3s D: %-3s S: %-10s ]", "N/A", "N/A", "N/A", "N/A");
-        }
-
-        return formattedAttacks;
-    }
-
+    /**
+     * Pokemon ASCII art
+     *
+     * @return                 String of Pokemon ASCII art
+     */
     public String getAscii() {
         return this.ascii;
     }
 
-    public String toString() {
-        return String.format("║ %-15s ║ %s [%3d/%-3d] ║ %-15s ║ %-15s ║ %-15s ║%s ║", this.name, this.generateHealthBar(), this.hp, this.totalhp, this.type, this.resistance, this.weakness, this.generateAttacks());
-    }
-
+    /**
+     * Simple Pokemon status
+     *
+     * @return                 String of Pokemon status
+     */
     public String toStringSimple() {
         return String.format(" %-12s ║ HP: %s [%3d/%-3d] ║ E: [%3d/50 ] ", this.name, this.generateHealthBar(), this.hp, this.totalhp, this.energy);
     }
 
+    /**
+     * Card of Pokemon status [Detailed]
+     *
+     * @return                 String of Pokemon card
+     */
     public String toCard(int number) {
         return String.format("╔═════════════════════════════════╗\n" +
                              "║ %-3s | NAME        %-13s ║\n" +
