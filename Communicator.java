@@ -44,12 +44,12 @@ public class Communicator {
 
             String[] verificationResponse = this.get(String.format("3000 // %s", name));
 
-            /*
-            * Sends CODE 3000 to server to verify
-            * that connection is to proper game
-            * server. (It's possible to connect
-            * to any TCP server successfully)
-            */
+            /**
+             * Sends CODE 3000 to server to verify
+             * that connection is to proper game
+             * server. (It's possible to connect
+             * to any TCP server successfully)
+             */
             if (!(verificationResponse.length == 2 && verificationResponse[1].equals("DOCTYPE!"))) {
                 isAlive = false;
                 Interactive.confirmBoxClear(String.format("Unable to connect to: %s:%d", host, port));
@@ -87,7 +87,7 @@ public class Communicator {
      */
     public String[] get(boolean verbose, String data) {
 
-        /*
+        /**
          * Verifies that Socket is still active
          * before sending data to avoid crashes.
          */

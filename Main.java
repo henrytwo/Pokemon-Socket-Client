@@ -108,17 +108,17 @@ public class Main {
     /**
      * Creates opponent (CPU) and battle (HUMAN) objects and feeds into game engine
      */
-    public static void singleplayer() {
+    private static void singleplayer() {
         Opponent opponent = new Opponent();
-        Battle battle = new Battle();
+        Player player = new Player();
 
-        Engine engine = new Engine(battle, opponent, selectedPokemon, name);
+        Engine engine = new Engine(player, opponent, selectedPokemon, name);
     }
 
     /**
      * Helper method to set default multiplayer address
      */
-    public static void multiplayer() {
+    private static void multiplayer() {
         multiplayer("development.rastera.xyz", 1337);
     }
 
@@ -129,7 +129,7 @@ public class Main {
      * @param host           String of server ip address
      * @param port           Integer of server port
      */
-    public static void multiplayer(String host, int port) {
+    private static void multiplayer(String host, int port) {
 
         Communicator connector = new Communicator(name, host, port);
 
@@ -174,15 +174,15 @@ public class Main {
     }
 
     /**
-     * Creates Battle object (HUMAN) and LocalEngine (REMOTE ENGINE) object
+     * Creates Player object (HUMAN) and LocalEngine (REMOTE ENGINE) object
      * LocalEngine is essentially a bridge between the game server and local battle
      *
      * @param connector        Communicator object for commucation with game server
      */
-    public static void setupGame(Communicator connector) {
+    private static void setupGame(Communicator connector) {
         if (Operations.joinGame(connector)) {
-            Battle battle = new Battle();
-            LocalEngine engine = new LocalEngine(connector, Main.gameCode, Main.uuid, battle, Main.selectedPokemon, name);
+            Player player = new Player();
+            LocalEngine engine = new LocalEngine(connector, Main.gameCode, Main.uuid, player, Main.selectedPokemon, name);
         }
     }
 }

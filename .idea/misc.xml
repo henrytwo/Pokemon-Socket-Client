@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$" />
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Desktop/Pokemon Docs" />
     <option name="OPTION_SCOPE" value="protected" />
     <option name="OPTION_HIERARCHY" value="true" />
     <option name="OPTION_NAVIGATOR" value="true" />
@@ -16,7 +16,7 @@
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
-    <option name="OPTION_INCLUDE_LIBS" value="false" />
+    <option name="OPTION_INCLUDE_LIBS" value="true" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_9" default="false" project-jdk-name="9.0" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

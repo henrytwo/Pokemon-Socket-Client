@@ -14,7 +14,7 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -41,7 +41,7 @@ public class Opponent {
      *
      * @return                 String of chosen name for Computer
      */
-    public static String computerName() {
+    private static String computerName() {
         ArrayList<String> names = new ArrayList<>();
         String line;
 
@@ -103,6 +103,7 @@ public class Opponent {
 
     /**
      * Computer selected pokemon
+     *
      * @return                 Pokemon object of computer selected pokemon
      */
     public Pokemon getSelectedPokemon() {
@@ -111,6 +112,7 @@ public class Opponent {
 
     /**
      * Computer name
+     *
      * @return                 String with computer name
      */
     public String getName() {
@@ -122,7 +124,7 @@ public class Opponent {
      *
      * @return                 ArrayList of Pokemon objects computer selected
      */
-    public static ArrayList<Pokemon> computerDeck() {
+    private static ArrayList<Pokemon> computerDeck() {
         ArrayList<Pokemon> deck = new ArrayList<>();
 
         ArrayList<Pokemon> available = Utilities.deepCopy(Main.pokemonAvailable);

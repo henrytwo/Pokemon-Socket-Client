@@ -24,7 +24,7 @@ public class LocalEngine {
     private ArrayList<Pokemon> playerPokemons;
     private String playerName, gameCode, uuid;
     private Pokemon playerSelectedPokemon;
-    private Battle battle;
+    private Player player;
     private Communicator connector;
 
     /**
@@ -33,18 +33,18 @@ public class LocalEngine {
      * @param connector        Communicator object
      * @param gameCode         String with client gameCode
      * @param uuid             String with client uuid
-     * @param battle           Battle object for Battle UI
+     * @param player           Player object for Player UI
      * @param playerPokemons   ArrayList of player's Pokemon
      * @param playerName       String of player's name
      */
-    public LocalEngine(Communicator connector, String gameCode, String uuid, Battle battle, ArrayList<Pokemon> playerPokemons, String playerName) {
+    public LocalEngine(Communicator connector, String gameCode, String uuid, Player player, ArrayList<Pokemon> playerPokemons, String playerName) {
 
-        this.connector = connector;
-        this.gameCode = gameCode;
-        this.uuid = uuid;
-        this.battle = battle;
+        this.connector      = connector;
+        this.gameCode       = gameCode;
+        this.uuid           = uuid;
+        this.player         = player;
 
-        this.playerName = playerName;
+        this.playerName     = playerName;
         this.playerPokemons = Utilities.deepCopy(playerPokemons);
 
         Interactive.clearConsole();
@@ -57,9 +57,9 @@ public class LocalEngine {
      *
      * @return                 String with game outcome
      */
-    public String game() {
+    private String game() {
         // Sends initial pokemon selection
-        this.playerSelectedPokemon = Battle.playerChoosePokemon(this.playerPokemons);
+        this.playerSelectedPokemon = Player.playerChoosePokemon(this.playerPokemons);
         this.connector.get(String.format("2 // InitPkmn // %s", this.playerSelectedPokemon.getName()));
 
         String message;
@@ -107,10 +107,10 @@ public class LocalEngine {
                     case "Result":
                         return messageIn[2];
                     case "MakeAction":
-                        messageOut = String.join(" // ", battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon));
+                        messageOut = String.join(" // ", player.getUserAction(this.playerPokemons, this.playerSelectedPokemon));
                         break;
                     case "MakeChoose":
-                        messageOut = String.format("Retreat // %s", battle.playerChoosePokemon(this.playerPokemons).getName(), !forcedRetreat);
+                        messageOut = String.format("Retreat // %s", player.playerChoosePokemon(this.playerPokemons).getName());
                         break;
                     case "Info":
                         Interactive.clearConsole();
@@ -149,7 +149,7 @@ public class LocalEngine {
      * @param pokemonArray     ArrayList with local Pokemon objects
      * @return                 Pokemon object
      */
-    public Pokemon getPokemonString(String pokemonName, ArrayList<Pokemon> pokemonArray) {
+    private Pokemon getPokemonString(String pokemonName, ArrayList<Pokemon> pokemonArray) {
         for (Pokemon pokemon : pokemonArray) {
             if (pokemon.getName().equals(pokemonName)) {
                 return pokemon;
@@ -163,7 +163,7 @@ public class LocalEngine {
      *
      * @param pokemonData      String array with updated data
      */
-    public void updatePokemons(String[] pokemonData) {
+    private void updatePokemons(String[] pokemonData) {
         Pokemon updatePokemon;
         int updateIndex;
         int kill = -1;

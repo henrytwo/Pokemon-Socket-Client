@@ -18,32 +18,32 @@ public class Engine {
 
     private static Random random = new Random();
     
-    public ArrayList<Pokemon> playerPokemons, opponentPokemons;
+    private ArrayList<Pokemon> playerPokemons, opponentPokemons;
     private String playerName, opponentName;
     private Pokemon playerSelectedPokemon, opponentSelectedPokemon;
     private boolean playerTurn;
     private Opponent opponent;
-    private Battle battle;
+    private Player player;
 
     /**
      * Engine constructor
      *
-     * @param battle           Battle object (Player)
+     * @param player           Player object (Player)
      * @param opponent         Opponent object (CPU)
      * @param playerPokemons   ArrayList of player's Pokemon
      * @param playerName       String of player's name
      */
-    public Engine(Battle battle, Opponent opponent, ArrayList<Pokemon> playerPokemons, String playerName) {
+    public Engine(Player player, Opponent opponent, ArrayList<Pokemon> playerPokemons, String playerName) {
         this.playerName              = playerName;
         this.opponentName            = opponent.getName();
         this.playerPokemons          = Utilities.deepCopy(playerPokemons);
         this.opponentPokemons        = Utilities.deepCopy(opponent.deck);
-        this.battle                  = battle;
+        this.player                  = player;
         this.opponent                = opponent;
         this.playerTurn              = random.nextBoolean();
 
         this.opponentSelectedPokemon = opponent.getSelectedPokemon();
-        this.playerSelectedPokemon   = Battle.playerChoosePokemon(this.playerPokemons);
+        this.playerSelectedPokemon   = Player.playerChoosePokemon(this.playerPokemons);
 
         Interactive.clearConsole();
         Interactive.winScreen(game());
@@ -55,7 +55,7 @@ public class Engine {
      * @param party            ArrayList of team's Pokemon
      * @return                 ArrayList of team's Pokemon post regen
      */
-    public ArrayList<Pokemon> regen(ArrayList<Pokemon> party) {
+    private ArrayList<Pokemon> regen(ArrayList<Pokemon> party) {
         for (Pokemon pokemon : party) {
             pokemon.setEnergy((pokemon.getEnergy() + 10 > 50) ? 50 : pokemon.getEnergy() + 10);
         }
@@ -67,7 +67,7 @@ public class Engine {
      *
      * @return                 Boolean with outcome of game
      */
-    public boolean game() {
+    private boolean game() {
 
         String[] action;
 
@@ -94,7 +94,7 @@ public class Engine {
 
                     Interactive.delayTypeln("Your Pokemon has fainted! You must pick a replacement to continue fighting!");
 
-                    action = new String[] {"Retreat", battle.playerChoosePokemon(this.playerPokemons, false).getName()};
+                    action = new String[] {"Retreat", player.playerChoosePokemon(this.playerPokemons, false).getName()};
                 }
                 // Check if Pokemon is stunned
                 else if (this.playerSelectedPokemon.getStunned()) {
@@ -104,23 +104,23 @@ public class Engine {
                 }
                 // User input
                 else {
-                    action = this.battle.getUserAction(this.playerPokemons, this.playerSelectedPokemon);
+                    action = this.player.getUserAction(this.playerPokemons, this.playerSelectedPokemon);
                 }
 
                 // COMMAND EXECUTION
                 // Pass
-                if (action[0] == "Pass") {
+                if (action[0].equals("Pass")) {
                     Interactive.delayTypeln(String.format("%s passed their turn\n", this.playerName));
 
                     this.playerTurn = !this.playerTurn;
                     break;
                 }
                 // Retreat
-                else if(action[0] == "Retreat") {
+                else if(action[0].equals("Retreat")) {
 
                     // Searches for new Pokemon object
                     for (Pokemon pokemon : this.playerPokemons) {
-                        if (pokemon.getName() == action[1]) {
+                        if (pokemon.getName().equals(action[1])) {
                             this.playerSelectedPokemon = pokemon;
                             break;
                         }
@@ -133,13 +133,13 @@ public class Engine {
                     break;
                 }
                 // Info
-                else if (action[0] == "Info") {
+                else if (action[0].equals("Info")) {
                     Interactive.clearConsole();
                     Interactive.delayTypeln("Pokemon Statistics");
                     Interactive.displayPokemonCards(this.playerPokemons);
                 }
                 // Attack
-                else if (action[0] != "Back") {
+                else if (!action[0].equals("Back")) {
 
                     // Checks if attack is valid
                     if (this.playerSelectedPokemon.getEnergy() - this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getEnergyCost() >= 0) {
@@ -186,15 +186,15 @@ public class Engine {
                     action = opponent.computerTurn(this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
                 }
 
-                if (action[0] == "Pass") {
+                if (action[0].equals("Pass")) {
                     Interactive.delayTypeln(String.format("%s passed their turn\n", this.opponentName));
 
                     this.playerTurn = !this.playerTurn;
                     break;
                 }
-                else if (action[0] == "Retreat") {
+                else if (action[0].equals("Retreat")) {
                     for (Pokemon pokemon : this.opponentPokemons) {
-                        if (pokemon.getName() == action[1]) {
+                        if (pokemon.getName().equals(action[1])) {
                             this.opponentSelectedPokemon = pokemon;
                             break;
                         }
@@ -236,7 +236,7 @@ public class Engine {
      * @param attack           Attack object to be applied
      * @return                 Target Pokemon object post attack
      */
-    public Pokemon action(Pokemon target, Pokemon attacker, Attack attack) {
+    private Pokemon action(Pokemon target, Pokemon attacker, Attack attack) {
 
         // Attack values
         // (Attack strength can change based on specials)
@@ -266,7 +266,7 @@ public class Engine {
         // Begin special attack sequence
         finalDamage = baseDamage;
 
-        if (attack.getSpecial() != "N/A") {
+        if (!attack.getSpecial().equals("N/A")) {
             switch (attack.getSpecial()) {
                 case "Stun":
                     if (random.nextBoolean()) {
