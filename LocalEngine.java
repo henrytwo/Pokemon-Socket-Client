@@ -59,7 +59,7 @@ public class LocalEngine {
      */
     private String game() {
         // Sends initial pokemon selection
-        this.playerSelectedPokemon = Player.playerChoosePokemon(this.playerPokemons);
+        this.playerSelectedPokemon = Player.choosePokemon(this.playerPokemons);
         this.connector.get(String.format("2 // InitPkmn // %s", this.playerSelectedPokemon.getName()));
 
         String message;
@@ -107,10 +107,10 @@ public class LocalEngine {
                     case "Result":
                         return messageIn[2];
                     case "MakeAction":
-                        messageOut = String.join(" // ", player.getUserAction(this.playerPokemons, this.playerSelectedPokemon));
+                        messageOut = String.join(" // ", player.getAction(this.playerPokemons, this.playerSelectedPokemon));
                         break;
                     case "MakeChoose":
-                        messageOut = String.format("Retreat // %s", player.playerChoosePokemon(this.playerPokemons).getName());
+                        messageOut = String.format("Retreat // %s", player.choosePokemon(this.playerPokemons).getName());
                         break;
                     case "Info":
                         Interactive.clearConsole();

@@ -42,8 +42,8 @@ public class Engine {
         this.opponent                = opponent;
         this.playerTurn              = random.nextBoolean();
 
-        this.opponentSelectedPokemon = opponent.getSelectedPokemon();
-        this.playerSelectedPokemon   = Player.playerChoosePokemon(this.playerPokemons);
+        this.opponentSelectedPokemon = opponent.choosePokemon();
+        this.playerSelectedPokemon   = Player.choosePokemon(this.playerPokemons);
 
         Interactive.clearConsole();
         Interactive.winScreen(game());
@@ -94,7 +94,7 @@ public class Engine {
 
                     Interactive.delayTypeln("Your Pokemon has fainted! You must pick a replacement to continue fighting!");
 
-                    action = new String[] {"Retreat", player.playerChoosePokemon(this.playerPokemons, false).getName()};
+                    action = new String[] {"Retreat", player.choosePokemon(this.playerPokemons, false).getName()};
                 }
                 // Check if Pokemon is stunned
                 else if (this.playerSelectedPokemon.getStunned()) {
@@ -104,7 +104,7 @@ public class Engine {
                 }
                 // User input
                 else {
-                    action = this.player.getUserAction(this.playerPokemons, this.playerSelectedPokemon);
+                    action = this.player.getAction(this.playerPokemons, this.playerSelectedPokemon);
                 }
 
                 // COMMAND EXECUTION
@@ -175,7 +175,7 @@ public class Engine {
                         return true;
                     }
 
-                    action = new String[] {"Retreat", this.opponent.pickPokemon(this.opponentPokemons).getName()};
+                    action = new String[] {"Retreat", this.opponent.choosePokemon(this.opponentPokemons).getName()};
                 }
                 else if (this.opponentSelectedPokemon.getStunned()) {
                     this.opponentSelectedPokemon.setStunned(false);
@@ -183,7 +183,7 @@ public class Engine {
                     action = new String[] {"Pass"};
                 }
                 else {
-                    action = opponent.computerTurn(this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
+                    action = opponent.getAction(this.opponentSelectedPokemon.getEnergy(), this.opponentSelectedPokemon.getAttacks());
                 }
 
                 if (action[0].equals("Pass")) {

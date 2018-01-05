@@ -27,7 +27,7 @@ public class Player {
      * @param playerPokemon    Player's current Pokemon object
      * @return                 String with encoded Player action
      */
-    public String[] getUserAction(ArrayList<Pokemon> playerPokemons, Pokemon playerPokemon) {
+    public String[] getAction(ArrayList<Pokemon> playerPokemons, Pokemon playerPokemon) {
 
         String pokemonName                = playerPokemon.getName();
         int energy                        = playerPokemon.getEnergy();
@@ -68,7 +68,7 @@ public class Player {
                     }
                 }
             case 2:
-                return new String[] {"Retreat", playerChoosePokemon(playerPokemons).getName()};
+                return new String[] {"Retreat", choosePokemon(playerPokemons).getName()};
             case 3:
                 return new String[] {"Pass"};
             case 4:
@@ -87,8 +87,8 @@ public class Player {
      * @param playerPokemons   ArrayList of Player's Pokemon
      * @return                 Selected Pokemon objet
      */
-    public static Pokemon playerChoosePokemon(ArrayList<Pokemon> playerPokemons) {
-        return playerChoosePokemon(playerPokemons, true);
+    public static Pokemon choosePokemon(ArrayList<Pokemon> playerPokemons) {
+        return choosePokemon(playerPokemons, true);
     }
 
     /**
@@ -98,7 +98,7 @@ public class Player {
      * @param playerPokemons   ArrayList of Player's Pokemon
      * @return                 Selected Pokemon objet
      */
-    public static Pokemon playerChoosePokemon(ArrayList<Pokemon> playerPokemons, boolean clear) {
+    public static Pokemon choosePokemon(ArrayList<Pokemon> playerPokemons, boolean clear) {
         boolean initialClear = false;
 
         while (true) {

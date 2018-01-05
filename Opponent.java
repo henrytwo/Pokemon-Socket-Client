@@ -33,7 +33,77 @@ public class Opponent {
     public Opponent() {
         this.name = computerName();
         this.deck = computerDeck();
-        this.selectedPokemon = pickPokemon(this.deck);
+        this.selectedPokemon = choosePokemon(this.deck);
+    }
+
+    /**
+     * Computer randomly picks action
+     *
+     * @param energy           Integer of current energy level
+     * @param attackArrayList  ArrayList of Attack objects computer can use
+     * @return                 String array of desired actions
+     */
+    public String[] getAction(int energy, ArrayList<Attack> attackArrayList) {
+
+        ArrayList<Attack> validAttacks = new ArrayList<>();
+
+        for (Attack attack : attackArrayList) {
+            if (energy - attack.getEnergyCost() >= 0) {
+                validAttacks.add(attack);
+            }
+        }
+
+        Collections.shuffle(validAttacks);
+
+        // Passes if valid move cannot be made
+        return new String[] {(validAttacks.size() > 0) ? Integer.toString(attackArrayList.indexOf(validAttacks.get(0))) : "Pass"};
+
+    }
+
+    /**
+     * Computer randomly picks starting Pokemon
+     *
+     * @param deck             ArrayList of Pokemon objects computer can choose from
+     * @return                 Pokemon object computer chose to use
+     */
+    public Pokemon choosePokemon(ArrayList<Pokemon> deck) {
+        return deck.get(this.random.nextInt(deck.size()));
+    }
+
+    /**
+     * Computer selected pokemon
+     *
+     * @return                 Pokemon object of computer selected pokemon
+     */
+    public Pokemon choosePokemon() {
+        return this.selectedPokemon;
+    }
+
+    /**
+     * Computer name
+     *
+     * @return                 String with computer name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Computer picks deck
+     *
+     * @return                 ArrayList of Pokemon objects computer selected
+     */
+    private static ArrayList<Pokemon> computerDeck() {
+        ArrayList<Pokemon> deck = new ArrayList<>();
+
+        ArrayList<Pokemon> available = Utilities.deepCopy(Main.pokemonAvailable);
+        Collections.shuffle(available);
+
+        for (int i = 0; i < Deck.NUMPOKEMON; i++) {
+            deck.add(available.get(i));
+        }
+
+        return deck;
     }
 
     /**
@@ -65,75 +135,5 @@ public class Opponent {
         }
 
         return names.get(random.nextInt(names.size()));
-    }
-
-    /**
-     * Computer randomly picks starting Pokemon
-     *
-     * @param deck             ArrayList of Pokemon objects computer can choose from
-     * @return                 Pokemon object computer chose to use
-     */
-    public Pokemon pickPokemon(ArrayList<Pokemon> deck) {
-        return deck.get(this.random.nextInt(deck.size()));
-    }
-
-    /**
-     * Computer randomly picks action
-     *
-     * @param energy           Integer of current energy level
-     * @param attackArrayList  ArrayList of Attack objects computer can use
-     * @return                 String array of desired actions
-     */
-    public String[] computerTurn(int energy, ArrayList<Attack> attackArrayList) {
-
-        ArrayList<Attack> validAttacks = new ArrayList<>();
-
-        for (Attack attack : attackArrayList) {
-            if (energy - attack.getEnergyCost() >= 0) {
-                validAttacks.add(attack);
-            }
-        }
-
-        Collections.shuffle(validAttacks);
-
-        // Passes if valid move cannot be made
-        return new String[] {(validAttacks.size() > 0) ? Integer.toString(attackArrayList.indexOf(validAttacks.get(0))) : "Pass"};
-
-    }
-
-    /**
-     * Computer selected pokemon
-     *
-     * @return                 Pokemon object of computer selected pokemon
-     */
-    public Pokemon getSelectedPokemon() {
-        return this.selectedPokemon;
-    }
-
-    /**
-     * Computer name
-     *
-     * @return                 String with computer name
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Computer picks deck
-     *
-     * @return                 ArrayList of Pokemon objects computer selected
-     */
-    private static ArrayList<Pokemon> computerDeck() {
-        ArrayList<Pokemon> deck = new ArrayList<>();
-
-        ArrayList<Pokemon> available = Utilities.deepCopy(Main.pokemonAvailable);
-        Collections.shuffle(available);
-
-        for (int i = 0; i < Deck.NUMPOKEMON; i++) {
-            deck.add(available.get(i));
-        }
-
-        return deck;
     }
 }
