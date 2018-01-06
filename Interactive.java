@@ -25,6 +25,35 @@ public class Interactive {
     public static Scanner stdin = new Scanner(System.in);
 
     /**
+     * Loads ASCII art from file and prints it out
+     *
+     * @param path             String with path to art
+     * @param fallBack         String with fallback message (If error occurs)
+     */
+    public static void loadArt(String path, String fallBack) {
+        String data;
+
+        try {
+            BufferedReader pokemonLogoFile = new BufferedReader(new FileReader(new File(path)));
+
+            while (true){
+                data = pokemonLogoFile.readLine();
+                if (data != null) {
+                    delayTypeln(1, data);
+                }
+                else {
+                    break;
+                }
+            }
+
+        }
+        catch (IOException e) {
+            delayTypeln(fallBack);
+        }
+
+    }
+
+    /**
      * Makes first letter of String Uppercase
      *
      *  @param word       String with initial word to be capitalized
@@ -286,23 +315,7 @@ public class Interactive {
         clearConsole();
 
         // Reads Pokemon logo from file
-        try {
-            BufferedReader pokemonLogoFile = new BufferedReader(new FileReader(new File("ascii/pokemonlogo.txt")));
-
-            while (true){
-                data = pokemonLogoFile.readLine();
-                if (data != null) {
-                    delayTypeln(1, data);
-                }
-                else {
-                    break;
-                }
-            }
-
-        }
-        catch (IOException e) {
-            delayTypeln("Error: FileIO Error");
-        }
+        loadArt("ascii/pokemonlogo.txt", "Pokemon!\n[Btw there are some FileIO errors...]");
 
         confirmBox("\nWelcome to Pokemon Arena!\n\n" +
                    "Developed by: Henry Tu\n" +
@@ -369,10 +382,10 @@ public class Interactive {
         clearConsole();
 
         if (victory) {
-            delayTypeln("YOU WIN!");
+            loadArt("ascii/win.txt", "You win!");
         }
         else {
-            delayTypeln("YOU LOST!");
+            loadArt("ascii/lose.txt", "You lost!");
         }
 
         confirmBox("");
