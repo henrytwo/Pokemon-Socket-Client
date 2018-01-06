@@ -506,6 +506,9 @@ public class Interactive {
                                 found = true;
                                 clearConsole();
 
+                                delayln(15, pokemon.getAscii());
+                                delayln(15, pokemon.toCard(-1));
+
                                 if (booleanSelectMenu(String.format("Are you sure you want to select %s [Y/n]?", pokemon.getName()))) {
                                     Main.selectedPokemon.add(pokemon);
                                     Main.pokemonAvailable.remove(pokemon);
