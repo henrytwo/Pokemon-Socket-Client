@@ -90,7 +90,7 @@ public class LocalEngine {
                 // Performs subaction
                 switch (messageIn[1]) {
                     case "Draw":
-                        Interactive.delayTypeln(1,getPokemonString(messageIn[2], Main.allPokemon).getAscii());
+                        Interactive.delayln(15,getPokemonString(messageIn[2], Main.allPokemon).getAscii());
                         messageOut = "Ready";
                         break;
                     case "Message":

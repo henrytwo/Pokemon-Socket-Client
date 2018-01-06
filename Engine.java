@@ -145,7 +145,7 @@ public class Engine {
                     if (this.playerSelectedPokemon.getEnergy() - this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getEnergyCost() >= 0) {
                         this.playerSelectedPokemon.setEnergy(this.playerSelectedPokemon.getEnergy() - this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getEnergyCost());
 
-                        Interactive.delayTypeln(1, this.playerSelectedPokemon.getAscii());
+                        Interactive.delayln(15, this.playerSelectedPokemon.getAscii());
                         Interactive.delayTypeln(String.format("%s: %s, USE %s!", this.playerName, this.playerSelectedPokemon.getName(), this.playerSelectedPokemon.getAttacks().get(Integer.parseInt(action[0])).getName()));
 
                         // Executes attack on player
@@ -213,7 +213,7 @@ public class Engine {
                         this.opponentSelectedPokemon.setEnergy(this.opponentSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost());
 
                         //Interactive.clearConsole();
-                        Interactive.delayTypeln(1, this.opponentSelectedPokemon.getAscii());
+                        Interactive.delayln(15, this.opponentSelectedPokemon.getAscii());
                         Interactive.delayTypeln(String.format("%s: %s, USE %s!", this.opponentName, this.opponentSelectedPokemon.getName(), attackArrayList.get(Integer.parseInt(action[0])).getName()));
 
                         this.playerSelectedPokemon = action(this.playerSelectedPokemon, this.opponentSelectedPokemon, attackArrayList.get(Integer.parseInt(action[0])));
