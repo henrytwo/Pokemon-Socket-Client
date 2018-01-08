@@ -45,7 +45,7 @@ public class Opponent {
      */
     public String[] getAction(int energy, ArrayList<Attack> attackArrayList) {
 
-        ArrayList<Attack> validAttacks = new ArrayList<>();
+        ArrayList<Attack> validAttacks = new ArrayList<Attack>();
 
         for (Attack attack : attackArrayList) {
             if (energy - attack.getEnergyCost() >= 0) {
@@ -94,7 +94,7 @@ public class Opponent {
      * @return                 ArrayList of Pokemon objects computer selected
      */
     private static ArrayList<Pokemon> computerDeck() {
-        ArrayList<Pokemon> deck = new ArrayList<>();
+        ArrayList<Pokemon> deck = new ArrayList<Pokemon>();
 
         ArrayList<Pokemon> available = Utilities.deepCopy(Main.pokemonAvailable);
         Collections.shuffle(available);
@@ -112,7 +112,7 @@ public class Opponent {
      * @return                 String of chosen name for Computer
      */
     private static String computerName() {
-        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<String>();
         String line;
 
         try {

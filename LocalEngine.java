@@ -64,7 +64,7 @@ public class LocalEngine {
 
         String message;
         String[] messageIn;
-        ArrayList<String> doNotUpdate = new ArrayList<>() {{add("Draw"); add("Message"); add("Result");}};
+        ArrayList<String> doNotUpdate = new ArrayList<String>() {{add("Draw"); add("Message"); add("Result");}};
         String messageOut = "Ready";
         boolean forcedRetreat = false;
 

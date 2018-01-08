@@ -22,7 +22,7 @@ public class Utilities {
      * @return                 Deep copied object
      */
     public static <T> ArrayList<T> deepCopy(ArrayList<T> starter) {
-        ArrayList<T> newArrayList = new ArrayList<>();
+        ArrayList<T> newArrayList = new ArrayList<T>();
 
         for (T item: starter) {
             newArrayList.add(item);

@@ -19,8 +19,8 @@ import java.util.*;
 
 public class Deck {
 
-    private HashMap<String, Pokemon> pokemonData = new HashMap<>();
-    private ArrayList<String> pokemonName        = new ArrayList<>();
+    private HashMap<String, Pokemon> pokemonData = new HashMap<String, Pokemon>();
+    private ArrayList<String> pokemonName        = new ArrayList<String>();
     private static final int NAME                = 0;
     public static final int NUMPOKEMON           = 6;
     String dataIn;
@@ -97,7 +97,7 @@ public class Deck {
      * @return                 ArrayList of Pokemon objects
      */
     public static ArrayList<Pokemon> getPokemonObjects(ArrayList<String> pokemonName, HashMap<String, Pokemon> pokemonData) {
-        ArrayList<Pokemon> pokemonArrayList = new ArrayList<>();
+        ArrayList<Pokemon> pokemonArrayList = new ArrayList<Pokemon>();
 
         for (String name : pokemonName) {
             pokemonArrayList.add(pokemonData.get(name));

@@ -21,7 +21,7 @@ public class Main {
     public static Scanner stdin                       = new Scanner(System.in);
     public static ArrayList<Pokemon> allPokemon       = Deck.getPokemonObjects(deck.getPokemonNames(), deck.getPokemonData());
     public static ArrayList<Pokemon> pokemonAvailable = Utilities.deepCopy(allPokemon);
-    public static ArrayList<Pokemon> selectedPokemon  = new ArrayList<>();
+    public static ArrayList<Pokemon> selectedPokemon  = new ArrayList<Pokemon>();
 
     public static String name, gameCode, uuid, host;
     public static int port;
@@ -81,7 +81,7 @@ public class Main {
                     if (Interactive.booleanSelectMenu("Are you sure you want to change Pokemon selection? [Y/n]")) {
 
                         pokemonAvailable = Deck.getPokemonObjects(deck.getPokemonNames(), deck.getPokemonData());
-                        selectedPokemon  = new ArrayList<>();
+                        selectedPokemon  = new ArrayList<Pokemon>();
 
                         Interactive.pokemonPicker();
 

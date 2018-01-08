@@ -80,7 +80,7 @@ public class Pokemon {
      * @return                 ArrayList of Attack objects
      */
     private ArrayList<Attack> getAttacks(String[] attackData) {
-        ArrayList<Attack> attacks = new ArrayList<>();
+        ArrayList<Attack> attacks = new ArrayList<Attack>();
 
         for (int index = 0; index < this.numAttacks * 4; index += 4) {
             attacks.add(new Attack(attackData[index], attackData[index + 1], attackData[index + 2], (index + 3) < attackData.length ? attackData[index + 3] : "N/A"));

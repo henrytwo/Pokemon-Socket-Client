@@ -420,7 +420,7 @@ public class Interactive {
 
         for (int i = 0; i < pokemonAvailable.size(); i += 3) {
 
-            ArrayList<String[]> cardArray = new ArrayList<>();
+            ArrayList<String[]> cardArray = new ArrayList<String[]>();
 
             cardArray.add(pokemonAvailable.get(i).toCard(i).split("\n"));
 

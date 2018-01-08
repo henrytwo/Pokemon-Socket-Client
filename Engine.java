@@ -207,7 +207,7 @@ public class Engine {
                     break;
                 }
                 else {
-                    ArrayList<Attack> attackArrayList = new ArrayList<>(this.opponentSelectedPokemon.getAttacks());
+                    ArrayList<Attack> attackArrayList = new ArrayList<Attack>(this.opponentSelectedPokemon.getAttacks());
 
                     if (this.opponentSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost() >= 0) {
                         this.opponentSelectedPokemon.setEnergy(this.opponentSelectedPokemon.getEnergy() - attackArrayList.get(Integer.parseInt(action[0])).getEnergyCost());
@@ -287,9 +287,10 @@ public class Engine {
                     while (true) {
                         if (random.nextBoolean() && baseDamage > 0) {
                             finalDamage += baseDamage;
-                            messageBuffer += "Wild Storm succeeded! Attack repeated!\n";
+                            messageBuffer += "Wild Storm succeeded!\n";
                         }
                         else {
+                            finalDamage = 0;
                             messageBuffer += (finalDamage == baseDamage) ? "Wild Storm missed!\n" : "";
                             break;
                         }
