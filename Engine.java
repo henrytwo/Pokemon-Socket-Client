@@ -278,14 +278,14 @@ public class Engine {
                     }
                     break;
                 case "Wild card":
-                    if (random.nextBoolean()) {
+                    if (random.nextBoolean() || baseDamage == 0) {
                         finalDamage = 0;
                         messageBuffer = String.format("%s MISSED! NO DAMAGE INFLICTED!\n", attacker.getName());
                     }
                     break;
                 case "Wild storm":
                     while (true) {
-                        if (random.nextBoolean()) {
+                        if (random.nextBoolean() && baseDamage > 0) {
                             finalDamage += baseDamage;
                             messageBuffer += "Wild Storm succeeded! Attack repeated!\n";
                         }

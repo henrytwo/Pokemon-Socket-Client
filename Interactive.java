@@ -22,6 +22,7 @@ import java.util.Scanner;
 
 public class Interactive {
 
+    public static final String os = System.getProperty("os.name");
     public static Scanner stdin = new Scanner(System.in);
 
     /**
@@ -223,7 +224,14 @@ public class Interactive {
      * Clears the console by calling some magic woodoo
      */
     public static void clearConsole() {
-        System.out.print("\033[H\033[2J");
+        if (os.contains("Windows")) {
+            for(int i = 0; i < 100; i++) {
+                System.out.println("");
+            }
+        }
+        else {
+            System.out.print("\033[H\033[2J");
+        }
     }
 
     /**
