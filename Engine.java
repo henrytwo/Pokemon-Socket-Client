@@ -290,8 +290,11 @@ public class Engine {
                             messageBuffer += "Wild Storm succeeded!\n";
                         }
                         else {
-                            finalDamage = 0;
-                            messageBuffer += (finalDamage == baseDamage) ? "Wild Storm missed!\n" : "";
+                            if (finalDamage == baseDamage) {
+                                messageBuffer += "Wild Storm missed!\n";
+                                finalDamage = 0;
+                            }
+
                             break;
                         }
                     }

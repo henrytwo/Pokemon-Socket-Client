@@ -167,7 +167,7 @@ public class Interactive {
     }
 
     /**
-     * Displays a caption and presents a [Y/n] prompt
+     * Displays a caption and presents a [y/n] prompt
      *
      * @param caption      String to be used as Main Caption
      * @return             Boolean response to caption
@@ -183,10 +183,10 @@ public class Interactive {
                 if (selection == 'y' || selection == 'n') {
                     return selection == 'y';
                 } else {
-                    confirmBoxClear("Error: Please enter a valid choice [Y/n]");
+                    confirmBoxClear("Error: Please enter a valid choice [y/n]");
                 }
             } catch (Exception e) {
-                confirmBoxClear("Error: Please enter a valid choice [Y/n]");
+                confirmBoxClear("Error: Please enter a valid choice [y/n]");
                 stdin.nextLine();
             }
         }
@@ -485,7 +485,7 @@ public class Interactive {
                             delayln(15, Main.pokemonAvailable.get(selection).getAscii());
                             delayln(15, Main.pokemonAvailable.get(selection).toCard(-1));
 
-                            if (booleanSelectMenu(String.format("Are you sure you want to select %s [Y/n]?", Main.pokemonAvailable.get(selection).getName()))) {
+                            if (booleanSelectMenu(String.format("Are you sure you want to select %s [y/n]?", Main.pokemonAvailable.get(selection).getName()))) {
                                 Main.selectedPokemon.add(Main.pokemonAvailable.get(selection));
                                 Main.pokemonAvailable.remove(selection);
                                 break;
@@ -530,7 +530,7 @@ public class Interactive {
                                 delayln(15, pokemon.getAscii());
                                 delayln(15, pokemon.toCard(-1));
 
-                                if (booleanSelectMenu(String.format("Are you sure you want to select %s [Y/n]?", pokemon.getName()))) {
+                                if (booleanSelectMenu(String.format("Are you sure you want to select %s [y/n]?", pokemon.getName()))) {
                                     Main.selectedPokemon.add(pokemon);
                                     Main.pokemonAvailable.remove(pokemon);
                                     selected = true;
